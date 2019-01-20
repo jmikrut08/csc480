@@ -15,7 +15,7 @@ EASY = [1, 3, 4, 8, 6, 2, 7, 0, 5]
 MEDIUM = [2, 8, 1, 0, 4, 3, 7, 6, 5]
 HARD = [5, 6, 7, 4, 0, 8, 3, 2, 1]
 
-
+# PRINTS STATE INTO SQUARE
 def printChildren(child):
     print(child[0], "  ", child[1], "  ", child[2])
     print(child[3], "  ", child[4], "  ", child[5])
@@ -24,7 +24,7 @@ def printChildren(child):
     print("-----------------------------------------")
 
 
-
+# CLASS FOR NODES IN GRAPH
 class Node:
     key = 0
     state = []
@@ -75,9 +75,10 @@ class Node:
     def getAction(self):
         return self.action
 
-
+    # SUCCESSOR METHOD FOR SUCCESSIVE CHILD STATES OF CURRENT STATE
     def generateChildren(self):
-        #self.myLock = threading.lock()
+        # DEPENDING ON THE CURRENT STATE, THERE ARE UP TO 4 POTENTIAL MOVES/CHILDREN
+        # CREATING COPIES OF ORIGINAL STATE BECAUSE I DON'T KNOW HOW MANY CHILDREN OR WHICH ONE EQUALS PARENT STATE
         child1 = list(self.state)
         child2 = list(self.state)
         child3 = list(self.state)
@@ -87,6 +88,7 @@ class Node:
         action3 = ""
         action4 = ""
         tempChildList = []
+        # MOVE SET DEPENDING ON WHICH INDEX 0 IS LOCATED.
         if self.state[0] == 0:
             child1[0] = child1[1]
             child1[1] = 0
@@ -168,9 +170,11 @@ class Node:
             child2[8] = child2[7]
             child2[7] = 0
             action2 = "Left"
+        # CHECKS STATE OF 4 POTENTIAL MOVES TO SEE IF THEY HAVE CHANGED FROM ORIGINAL STATE AND
+        # IF STATE IS EQUAL TO PARENT STATE. IF NOT EQUAL TO ORIGINAL STATE OR PARENT STATE
+        # THE CHILD STATE IS PLACED INTO A TEMP CHILD LIST OF NODES THATS RETURNED TO SEARCH ALGO.
         if child1 not in [self.state, self.parentState]:
-            # new child1
-            # givenKey, givenState, givenParentKey, givenParentState, givenAction, givenDepth, givenCost
+            # LOCKS THREADS SO GLOBAL KEY_COUNTER DOESN'T MESS UP.
             with threadLock:
                 global KEY_COUNTER
                 KEY_COUNTER += 1
@@ -194,10 +198,11 @@ class Node:
                KEY_COUNTER += 1
             childNode4 = Node(KEY_COUNTER, child1, self.key, self.state, action4, self.depth + 1, 0)
             tempChildList.append(childNode4)
+        # RETURNS LIST OF CHILD NODES
         return tempChildList
 
 
-# Queue Class
+# QUEUE CLASS FOR FIFO UTILITIES
 class Queue:
     def __init__(self):
         self.queue = list()
@@ -219,7 +224,7 @@ class Queue:
     def printQueue(self):
         return self.queue
 
-
+# CUSTOM DICTIONARY CLASS SAVING ALL SEARCHED NODES
 class Graph:
     def __init__(self):
         self.dict = {}
@@ -235,20 +240,20 @@ class Graph:
 
 
 def bfs(startNode):
-    # print(startNode.state)
-    # print(startNode.action)
-    currentDepth = Queue()
+    # FIFO QUEUE THAT HOLDS NODES THAT SHOULD BE SEARCHED NEXT
+    searchQueue = Queue()
+    # ONCE GOAL STATE IS FOUND, NODES ARE ADDED TO FOUND PATH
     foundPath = Queue()
     NodeList = Graph()
     checkedStates = []
     solvePath = []
 
-    currentDepth.push(startNode)
+    searchQueue.push(startNode)
 
     # check if state is goal
     print(startNode.state)
-    while currentDepth.size() > 0:
-        node = currentDepth.pop()
+    while searchQueue.size() > 0:
+        node = searchQueue.pop()
         print(node.getKey())
         checkedStates.append(node.getState())
         NodeList.add(node.getKey(), node)
@@ -258,7 +263,7 @@ def bfs(startNode):
                 children = node.generateChildren()
                 for element in children:
                     if element.getState not in checkedStates:
-                        currentDepth.push(element)
+                        searchQueue.push(element)
 
             else:
                 print("you've solved the puzzle")
