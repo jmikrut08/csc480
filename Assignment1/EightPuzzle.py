@@ -1,5 +1,4 @@
 # ASSIGNMENT 1 FOR CSC 480 - BY JACOB MIKRUT
-import threading
 
 GOAL = [1, 2, 3, 8, 0, 4, 7, 6, 5]
 ##################################
@@ -16,11 +15,6 @@ def printChildren(child):
     print(child[6], "   ", child[7], "   ", child[8])
     print("-----------------------------------------")
 
-    class MyThread(threading.Thread):
-        def __init__(self, myName, lock):
-            threading.Thread.__init__(self)
-            self.myName = myName
-            self.lock = lock
 
 
 class Node:
@@ -63,7 +57,7 @@ class Node:
         return self.key
 
     def generateChildren(self):
-        self.myLock = threading.lock()
+        #self.myLock = threading.lock()
         child1 = list(self.state)
         child2 = list(self.state)
         child3 = list(self.state)
@@ -235,11 +229,13 @@ def bfs(startNode):
                 node.setVisited()
                 children = node.generateChildren()
                 for element in children:
-                    currentDepth.push(element)
+                    if element.getState not in checkedStates:
+                        currentDepth.push(element)
 
             else:
                 print("you've solved the puzzle")
 
+                break
     # print("DOING BFS RIGHT NOW PLEASE WAIT")
 
 
