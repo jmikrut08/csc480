@@ -2,6 +2,7 @@
 import threading
 threadLock = threading.Lock()
 
+# iterates to add key for nodes
 keyCounter = 0
 
 GOAL = [1, 2, 3, 8, 0, 4, 7, 6, 5]
@@ -62,6 +63,8 @@ class Node:
 
     def getParentKey(self):
         return self.parentKey
+    def getParentState(self):
+        return self.parentState
 
     def generateChildren(self):
         #self.myLock = threading.lock()
@@ -215,10 +218,10 @@ class Graph:
         self.dict.update({key: value})
 
     def get(self, key):
-        self.dict.get(key)
+        return self.dict.get(key)
 
     def print(self):
-        self.dict.items()
+        print(self.dict.items())
 
 
 def bfs(startNode):
@@ -249,14 +252,25 @@ def bfs(startNode):
 
             else:
                 print("you've solved the puzzle")
+                # print(node.getKey())
                 foundPath.push(node)
                 while foundPath.size() > 0:
+                    # print("fuck")
+                    # print(node.getKey())
                     key = node.getKey()
                     solvePath.append(key)
                     parentKey = node.getParentKey()
+                    # print(parentKey)
+                    # NodeList.print()
+                    node = NodeList.get(parentKey)
+                    # print(node.getKey)
+                    foundPath.pop()
+                    foundPath.push(node)
+                for element in solvePath:
+                    print(len(solvePath))
 
 
-                break
+
     # print("DOING BFS RIGHT NOW PLEASE WAIT")
 
 
