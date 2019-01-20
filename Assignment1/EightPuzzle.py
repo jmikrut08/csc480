@@ -1,9 +1,11 @@
 # ASSIGNMENT 1 FOR CSC 480 - BY JACOB MIKRUT
+
+# LOCK FOR SYNCHRONIZING THREADS FOR KEYCOUNTER
 import threading
 threadLock = threading.Lock()
 
 # iterates to add key for nodes
-keyCounter = 0
+KEY_COUNTER = 1
 
 GOAL = [1, 2, 3, 8, 0, 4, 7, 6, 5]
 ##################################
@@ -15,9 +17,10 @@ HARD = [5, 6, 7, 4, 0, 8, 3, 2, 1]
 
 
 def printChildren(child):
-    print(child[0], "   ", child[1], "   ", child[2])
-    print(child[3], "   ", child[4], "   ", child[5])
-    print(child[6], "   ", child[7], "   ", child[8])
+    print(child[0], "  ", child[1], "  ", child[2])
+    print(child[3], "  ", child[4], "  ", child[5])
+    print(child[6], "  ", child[7], "  ", child[8])
+    print()
     print("-----------------------------------------")
 
 
@@ -63,8 +66,15 @@ class Node:
 
     def getParentKey(self):
         return self.parentKey
+
+    def getCost(self):
+        return self.cost
+
     def getParentState(self):
         return self.parentState
+    def getAction(self):
+        return self.action
+
 
     def generateChildren(self):
         #self.myLock = threading.lock()
@@ -162,27 +172,27 @@ class Node:
             # new child1
             # givenKey, givenState, givenParentKey, givenParentState, givenAction, givenDepth, givenCost
             with threadLock:
-                global keyCounter
-                keyCounter += 1
-            childNode1 = Node(keyCounter, child1, self.key, self.state, action1, self.depth + 1, 0)
+                global KEY_COUNTER
+                KEY_COUNTER += 1
+            childNode1 = Node(KEY_COUNTER, child1, self.key, self.state, action1, self.depth + 1, 0)
             tempChildList.append(childNode1)
         if child2 not in [self.state, self.parentState]:
             with threadLock:
                 # global keyCounter
-                keyCounter += 1
-            childNode2 = Node(keyCounter, child2, self.key, self.state, action2, self.depth + 1, 0)
+                KEY_COUNTER += 1
+            childNode2 = Node(KEY_COUNTER, child2, self.key, self.state, action2, self.depth + 1, 0)
             tempChildList.append(childNode2)
         if child3 not in [self.state, self.parentState]:
             with threadLock:
                 # global keyCounter
-                keyCounter += 1
-            childNode3 = Node(keyCounter, child1, self.key, self.state, action3, self.depth + 1, 0)
+                KEY_COUNTER += 1
+            childNode3 = Node(KEY_COUNTER, child1, self.key, self.state, action3, self.depth + 1, 0)
             tempChildList.append(childNode3)
         if child4 not in [self.state, self.parentState]:
             with threadLock:
                # global keyCounter
-                keyCounter += 1
-            childNode4 = Node(keyCounter, child1, self.key, self.state, action4, self.depth + 1, 0)
+               KEY_COUNTER += 1
+            childNode4 = Node(KEY_COUNTER, child1, self.key, self.state, action4, self.depth + 1, 0)
             tempChildList.append(childNode4)
         return tempChildList
 
@@ -258,6 +268,7 @@ def bfs(startNode):
                     #print("fuck")
                     print(node.getKey())
                     if node.getKey() == 1:
+                        solvePath.append(1)
                         break
                     key = node.getKey()
                     solvePath.append(key)
@@ -268,8 +279,17 @@ def bfs(startNode):
                     # print(node.getKey)
                     foundPath.pop()
                     foundPath.push(node)
-                for element in solvePath:
-                    print(element)
+                for element in reversed(solvePath):
+                    print("-----------------------------------------")
+                    #print(element)
+                    node = NodeList.get(element)
+                    print()
+                    print("Node Key:", node.getKey())
+                    print("Node State:", node.getState())
+                    print("Action:", node.getAction())
+                    print("Cost:", node.getCost())
+                    print()
+                    printChildren(node.getState())
                 break
 
 
