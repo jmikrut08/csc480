@@ -211,7 +211,7 @@ def bfs(startNode):
     # print(startNode.state)
     # print(startNode.action)
     currentDepth = Queue()
-    nextDepth = Queue()
+    foundPath = Queue()
     NodeList = Graph()
     checkedStates = []
 
@@ -234,7 +234,8 @@ def bfs(startNode):
 
             else:
                 print("you've solved the puzzle")
-
+                foundPath.push(node)
+                
                 break
     # print("DOING BFS RIGHT NOW PLEASE WAIT")
 
