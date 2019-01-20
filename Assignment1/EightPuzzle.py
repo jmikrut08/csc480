@@ -242,35 +242,45 @@ class Graph:
 def bfs(startNode):
     # FIFO QUEUE THAT HOLDS NODES THAT SHOULD BE SEARCHED NEXT
     searchQueue = Queue()
-    # ONCE GOAL STATE IS FOUND, NODES ARE ADDED TO FOUND PATH
+    # ONCE GOAL STATE IS FOUND, NODES ARE ADDED TO FOUND PATH QUEUE
     foundPath = Queue()
+    # DICTIONARY FOR ALL SEARCHED NODES { STATE.KEY : NODE }
     NodeList = Graph()
+    # STATE CHECKING TO NARROW DOWN REDUNDANCY.
     checkedStates = []
+    # ALLOWS ME TO ITERATE THROUGH FOUND PATH IN REVERSE
     solvePath = []
-
+    # BEGINS SEARCHING GRAPH/TREE WITH TOP NODE
     searchQueue.push(startNode)
-
-    # check if state is goal
-    print(startNode.state)
+    # ALLOWS TO DOUBLE CHECKING INITIAL STATE IN CASE CHANGING DIFFICULTIES.
+    #print(startNode.state)
     while searchQueue.size() > 0:
         node = searchQueue.pop()
-        print(node.getKey())
+        # PRINTS KEY FOR NODE THAT IS CURRENTLY BEING SEARCHED/VISITED
+        # print(node.getKey())
+        # ADDS STATE TO CHECK STATES
         checkedStates.append(node.getState())
+        # ADDS CURRENT NODE TO GRAPH/DICTIONARY OF ALL SEARCHED NODES
         NodeList.add(node.getKey(), node)
+        # IF WE HAVEN'T SEARCHED THIS NODE / DOESN'T EQUAL GOAL STATE, WE GENERATE ITS CHILD STATES
         if node.getVisited() == False:
+            # IF STATE EQUALS GOAL STATE -> CONTINUE DOWN TO ELSE BLOCK
             if node.getState() != GOAL:
+                # CHANGES BOOLEAN STORED IN NODE -> VISITED = TRUE
                 node.setVisited()
+                # GENERATES AND RETURN LIST OF CHILD STATE NODES
                 children = node.generateChildren()
                 for element in children:
+                    # FOR EACH CHILD CREATED, CHECKS IF WE'VE SEEN THE STATE BEFORE,
+                    # IF STATE HASN'T BEEN SEARCHED BEFORE, ITS ADDED TO SEARCH QUEUE
                     if element.getState not in checkedStates:
                         searchQueue.push(element)
-
+            # IF STATE EQUALS GOAL STATE
             else:
-                print("you've solved the puzzle")
+                # print("you've solved the puzzle")
                 # print(node.getKey())
                 foundPath.push(node)
                 while foundPath.size() > 0:
-                    #print("fuck")
                     print(node.getKey())
                     if node.getKey() == 1:
                         solvePath.append(1)
@@ -286,7 +296,6 @@ def bfs(startNode):
                     foundPath.push(node)
                 for element in reversed(solvePath):
                     print("-----------------------------------------")
-                    #print(element)
                     node = NodeList.get(element)
                     print()
                     print("Node Key:", node.getKey())
@@ -296,10 +305,9 @@ def bfs(startNode):
                     print()
                     printChildren(node.getState())
                 break
-
-
-    # print("DOING BFS RIGHT NOW PLEASE WAIT")
-
+##### -------------------------------------------
+##### USER INTERFACE CODE
+##### -------------------------------------------
 
 while True:
     startNode = Node(1, EASY, 0, [], "Start", 1, 0)
