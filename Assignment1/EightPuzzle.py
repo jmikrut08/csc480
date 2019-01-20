@@ -1,4 +1,8 @@
 # ASSIGNMENT 1 FOR CSC 480 - BY JACOB MIKRUT
+import threading
+threadLock = threading.Lock()
+
+keyCounter = 0
 
 GOAL = [1, 2, 3, 8, 0, 4, 7, 6, 5]
 ##################################
@@ -55,6 +59,9 @@ class Node:
 
     def getKey(self):
         return self.key
+
+    def getParentKey(self):
+        return self.parentKey
 
     def generateChildren(self):
         #self.myLock = threading.lock()
@@ -148,23 +155,30 @@ class Node:
             child2[8] = child2[7]
             child2[7] = 0
             action2 = "Left"
-        keyCounter = self.key
         if child1 not in [self.state, self.parentState]:
             # new child1
             # givenKey, givenState, givenParentKey, givenParentState, givenAction, givenDepth, givenCost
-            keyCounter += 1
+            with threadLock:
+                global keyCounter
+                keyCounter += 1
             childNode1 = Node(keyCounter, child1, self.key, self.state, action1, self.depth + 1, 0)
             tempChildList.append(childNode1)
         if child2 not in [self.state, self.parentState]:
-            keyCounter += 1
+            with threadLock:
+                # global keyCounter
+                keyCounter += 1
             childNode2 = Node(keyCounter, child2, self.key, self.state, action2, self.depth + 1, 0)
             tempChildList.append(childNode2)
         if child3 not in [self.state, self.parentState]:
-            keyCounter += 1
+            with threadLock:
+                # global keyCounter
+                keyCounter += 1
             childNode3 = Node(keyCounter, child1, self.key, self.state, action3, self.depth + 1, 0)
             tempChildList.append(childNode3)
         if child4 not in [self.state, self.parentState]:
-            keyCounter += 1
+            with threadLock:
+               # global keyCounter
+                keyCounter += 1
             childNode4 = Node(keyCounter, child1, self.key, self.state, action4, self.depth + 1, 0)
             tempChildList.append(childNode4)
         return tempChildList
@@ -214,6 +228,7 @@ def bfs(startNode):
     foundPath = Queue()
     NodeList = Graph()
     checkedStates = []
+    solvePath = []
 
     currentDepth.push(startNode)
 
@@ -235,7 +250,12 @@ def bfs(startNode):
             else:
                 print("you've solved the puzzle")
                 foundPath.push(node)
-                
+                while foundPath.size() > 0:
+                    key = node.getKey()
+                    solvePath.append(key)
+                    parentKey = node.getParentKey()
+
+
                 break
     # print("DOING BFS RIGHT NOW PLEASE WAIT")
 
