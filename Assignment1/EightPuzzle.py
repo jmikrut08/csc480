@@ -255,8 +255,10 @@ def bfs(startNode):
                 # print(node.getKey())
                 foundPath.push(node)
                 while foundPath.size() > 0:
-                    # print("fuck")
-                    # print(node.getKey())
+                    #print("fuck")
+                    print(node.getKey())
+                    if node.getKey() == 1:
+                        break
                     key = node.getKey()
                     solvePath.append(key)
                     parentKey = node.getParentKey()
@@ -267,14 +269,16 @@ def bfs(startNode):
                     foundPath.pop()
                     foundPath.push(node)
                 for element in solvePath:
-                    print(len(solvePath))
-
+                    print(element)
+                break
 
 
     # print("DOING BFS RIGHT NOW PLEASE WAIT")
 
 
 while True:
+    startNode = Node(1, EASY, 0, [], "Start", 1, 0)
+    bfs(startNode)
     userInput = input("what Program do you want to run?")
     if userInput == "yes":
         #  givenKey, givenState, givenParentKey, givenParentState, givenAction, givenDepth, givenCost
