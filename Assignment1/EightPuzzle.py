@@ -331,7 +331,7 @@ def bfs(startNode):
 
 
 def dfs(startNode):
-    # FIFO QUEUE THAT HOLDS NODES THAT SHOULD BE SEARCHED NEXT
+    # LIFO STACK THAT HOLDS NODES THAT SHOULD BE SEARCHED NEXT
     searchQueue = Stack()
     # ONCE GOAL STATE IS FOUND, NODES ARE ADDED TO FOUND PATH QUEUE
     foundPath = Queue()
