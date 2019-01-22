@@ -31,6 +31,7 @@ class Node:
     key = 0
     state = []
     children = []
+    childrenKeys = []
     visited = False
     parentKey = 0
     parentState = []
@@ -47,9 +48,14 @@ class Node:
         self.depth = givenDepth
         self.cost = givenCost
 
-    def addChild(self, givenChild):
-        if givenChild != self.parentState:
-            self.children.append(givenChild)
+    def addChildren(self, givenChildren):
+        self.children = givenChildren
+
+    def addChildKeys(self, key):
+        self.childrenKeys.append(key)
+
+    def getChildKeys(self):
+        return self.childrenKeys
 
     def setVisited(self):
         self.visited = True
@@ -247,6 +253,7 @@ class Stack:
     def size(self):
         return len(self.items)
 
+
 # CUSTOM DICTIONARY CLASS SAVING ALL SEARCHED NODES
 class Graph:
     def __init__(self):
@@ -331,71 +338,55 @@ def bfs(startNode):
 
 
 def dfs(startNode):
-    # LIFO STACK THAT HOLDS NODES THAT SHOULD BE SEARCHED NEXT
-    searchQueue = Stack()
-    # ONCE GOAL STATE IS FOUND, NODES ARE ADDED TO FOUND PATH QUEUE
-    foundPath = Queue()
-    # DICTIONARY FOR ALL SEARCHED NODES { STATE.KEY : NODE }
+    s = Stack()
     NodeList = Graph()
-    # STATE CHECKING TO NARROW DOWN REDUNDANCY.
-    checkedStates = []
-    # ALLOWS ME TO ITERATE THROUGH FOUND PATH IN REVERSE
+    retracePath = Queue()
+    foundPath = Stack()
     solvePath = []
-    # BEGINS SEARCHING GRAPH/TREE WITH TOP NODE
-    searchQueue.push(startNode)
-    # ALLOWS TO DOUBLE CHECKING INITIAL STATE IN CASE CHANGING DIFFICULTIES.
-    # print(startNode.state)
-    while searchQueue.size() > 0:
-        node = searchQueue.pop()
-        # PRINTS KEY FOR NODE THAT IS CURRENTLY BEING SEARCHED/VISITED
-        print(node.getKey())
-        # ADDS STATE TO CHECK STATES
-        checkedStates.append(node.getState())
-        # ADDS CURRENT NODE TO GRAPH/DICTIONARY OF ALL SEARCHED NODES
+    # s.push(startNode)
+    s.push(startNode)
+    while s.size() > 0:
+        node = s.pop()
         NodeList.add(node.getKey(), node)
-        # IF WE HAVEN'T SEARCHED THIS NODE / DOESN'T EQUAL GOAL STATE, WE GENERATE ITS CHILD STATES
-        if node.getVisited() == False:
-            # IF STATE EQUALS GOAL STATE -> CONTINUE DOWN TO ELSE BLOCK
-            if node.getState() != GOAL:
-                # CHANGES BOOLEAN STORED IN NODE -> VISITED = TRUE
-                node.setVisited()
-                # GENERATES AND RETURN LIST OF CHILD STATE NODES
-                children = node.generateChildren()
-                for element in children:
-                    # FOR EACH CHILD CREATED, CHECKS IF WE'VE SEEN THE STATE BEFORE,
-                    # IF STATE HASN'T BEEN SEARCHED BEFORE, ITS ADDED TO SEARCH QUEUE
-                    if element.getState not in checkedStates:
-                        searchQueue.push(element)
-            # IF STATE EQUALS GOAL STATE
-            else:
-                # print("you've solved the puzzle")
-                # print(node.getKey())
+        if node.getState() == GOAL:
+            print("you have solved the puzzle")
+            retracePath.push(node)
+            foundPath.push(node)
+            while foundPath.size() > 0:
+                print(node.getKey())
+                if node.getKey() == 1:
+                    solvePath.append(1)
+                    break
+                key = node.getKey()
+                solvePath.append(key)
+                parentKey = node.getParentKey()
+                node = NodeList.get(parentKey)
+                foundPath.pop()
                 foundPath.push(node)
-                while foundPath.size() > 0:
-                    print(node.getKey())
-                    if node.getKey() == 1:
-                        solvePath.append(1)
-                        break
-                    key = node.getKey()
-                    solvePath.append(key)
-                    parentKey = node.getParentKey()
-                    # print(parentKey)
-                    # NodeList.print()
-                    node = NodeList.get(parentKey)
-                    # print(node.getKey)
-                    foundPath.pop()
-                    foundPath.push(node)
-                for element in reversed(solvePath):
-                    print("-----------------------------------------")
-                    node = NodeList.get(element)
-                    print()
-                    print("Node Key:", node.getKey())
-                    print("Node State:", node.getState())
-                    print("Action:", node.getAction())
-                    print("Cost:", node.getCost())
-                    print()
-                    printChildren(node.getState())
-                break
+            for element in reversed(solvePath):
+                print("-----------------------------------------")
+                node = NodeList.get(element)
+                print(node.getKey())
+                print()
+                print("Node Key:", node.getKey())
+                print("Node State:", node.getState())
+                print("Action:", node.getAction())
+                print("Cost:", node.getCost())
+                print()
+                printChildren(node.getState())
+            break
+        if node.getVisited() == True:
+            continue
+        NodeList.add(node.getKey(), node)
+        children = node.generateChildren()
+        node.addChildren(children)
+        for child in children:
+            if child.getState() != node.getState:
+                if child.getState() != node.getParentState():
+                    key = child.getKey()
+                    if key not in node.getChildKeys():
+                        node.addChildKeys(key)
+                        s.push(child)
 
 
 ##### -------------------------------------------
@@ -404,7 +395,7 @@ def dfs(startNode):
 
 while True:
     startNode = Node(1, EASY, 0, [], "Start", 1, 0)
-    #bfs(startNode)
+    # bfs(startNode)
     dfs(startNode)
     userInput = input("what Program do you want to run?")
     if userInput == "yes":
