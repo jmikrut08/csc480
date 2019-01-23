@@ -39,11 +39,12 @@ class Node:
     depth = 0
     cost = 0
 
-    def __init__(self, givenKey, givenState, givenParentKey, givenParentState, givenAction, givenDepth, givenCost):
+    def __init__(self, givenKey, givenState, givenParentKey, givenParentState, givenAction, givenChildKeys,  givenDepth, givenCost):
         self.key = givenKey
         self.state = givenState
         self.parentKey = givenParentKey
         self.parentState = givenParentState
+        self.childrenKeys = givenChildKeys
         self.action = givenAction
         self.depth = givenDepth
         self.cost = givenCost
@@ -83,6 +84,12 @@ class Node:
 
     def getAction(self):
         return self.action
+
+    def setDepth(self, givenDepth):
+        self.depth = givenDepth
+
+    def getDepth(self):
+        return self.depth
 
     # SUCCESSOR METHOD FOR SUCCESSIVE CHILD STATES OF CURRENT STATE
     def generateChildren(self):
@@ -182,30 +189,31 @@ class Node:
         # CHECKS STATE OF 4 POTENTIAL MOVES TO SEE IF THEY HAVE CHANGED FROM ORIGINAL STATE AND
         # IF STATE IS EQUAL TO PARENT STATE. IF NOT EQUAL TO ORIGINAL STATE OR PARENT STATE
         # THE CHILD STATE IS PLACED INTO A TEMP CHILD LIST OF NODES THATS RETURNED TO SEARCH ALGO.
+        parentDepth = self.getDepth()
         if child1 not in [self.state, self.parentState]:
             # LOCKS THREADS SO GLOBAL KEY_COUNTER DOESN'T MESS UP.
             with threadLock:
                 global KEY_COUNTER
                 KEY_COUNTER += 1
-            childNode1 = Node(KEY_COUNTER, child1, self.key, self.state, action1, self.depth + 1, 0)
+            childNode1 = Node(KEY_COUNTER, child1, self.key, self.state, action1, [], parentDepth + 1, 0)
             tempChildList.append(childNode1)
         if child2 not in [self.state, self.parentState]:
             with threadLock:
                 # global keyCounter
                 KEY_COUNTER += 1
-            childNode2 = Node(KEY_COUNTER, child2, self.key, self.state, action2, self.depth + 1, 0)
+            childNode2 = Node(KEY_COUNTER, child2, self.key, self.state, action2, [], parentDepth + 1, 0)
             tempChildList.append(childNode2)
         if child3 not in [self.state, self.parentState]:
             with threadLock:
                 # global keyCounter
                 KEY_COUNTER += 1
-            childNode3 = Node(KEY_COUNTER, child1, self.key, self.state, action3, self.depth + 1, 0)
+            childNode3 = Node(KEY_COUNTER, child1, self.key, self.state, action3, [], parentDepth + 1, 0)
             tempChildList.append(childNode3)
         if child4 not in [self.state, self.parentState]:
             with threadLock:
                 # global keyCounter
                 KEY_COUNTER += 1
-            childNode4 = Node(KEY_COUNTER, child1, self.key, self.state, action4, self.depth + 1, 0)
+            childNode4 = Node(KEY_COUNTER, child1, self.key, self.state, action4, [], parentDepth + 1, 0)
             tempChildList.append(childNode4)
         # RETURNS LIST OF CHILD NODES
         return tempChildList
@@ -253,6 +261,9 @@ class Stack:
     def size(self):
         return len(self.items)
 
+    def emptyStack(self):
+        self.items.clear()
+
 
 # CUSTOM DICTIONARY CLASS SAVING ALL SEARCHED NODES
 class Graph:
@@ -267,6 +278,9 @@ class Graph:
 
     def print(self):
         print(self.dict.items())
+
+    def emptyGraph(self):
+        self.dict.clear()
 
 
 def bfs(startNode):
@@ -331,6 +345,7 @@ def bfs(startNode):
                     print("Node Key:", node.getKey())
                     print("Node State:", node.getState())
                     print("Action:", node.getAction())
+                    print("Depth:", node.getDepth())
                     print("Cost:", node.getCost())
                     print()
                     printChildren(node.getState())
@@ -343,7 +358,6 @@ def dfs(startNode):
     retracePath = Queue()
     foundPath = Stack()
     solvePath = []
-    # s.push(startNode)
     s.push(startNode)
     while s.size() > 0:
         node = s.pop()
@@ -353,7 +367,7 @@ def dfs(startNode):
             retracePath.push(node)
             foundPath.push(node)
             while foundPath.size() > 0:
-                print(node.getKey())
+                # print(node.getKey())
                 if node.getKey() == 1:
                     solvePath.append(1)
                     break
@@ -366,11 +380,11 @@ def dfs(startNode):
             for element in reversed(solvePath):
                 print("-----------------------------------------")
                 node = NodeList.get(element)
-                print(node.getKey())
                 print()
                 print("Node Key:", node.getKey())
                 print("Node State:", node.getState())
                 print("Action:", node.getAction())
+                print("Depth:", node.getDepth())
                 print("Cost:", node.getCost())
                 print()
                 printChildren(node.getState())
@@ -389,16 +403,84 @@ def dfs(startNode):
                         s.push(child)
 
 
+def IterativeDeepening(startNode):
+    currentDepth = 0
+    maxDepth = 1
+    s = Stack()
+    NodeList = Graph()
+    while currentDepth < 10:
+        maxDepth = maxDepth + 1
+        #global KEY_COUNTER
+        #KEY_COUNTER = 1
+        NodeList.emptyGraph()
+        s.emptyStack()
+        retracePath = Queue()
+        foundPath = Stack()
+        solvePath = []
+        s.push(startNode)
+        while currentDepth <= maxDepth:
+            if s.size() > 0:
+                node = s.pop()
+            else:
+                break
+            currentDepth = node.getDepth()
+            print(node.getKey(), ":", node.getState(), ":", node.getDepth())
+
+            NodeList.add(node.getKey(), node)
+            if node.getState() == GOAL:
+                print("you have solved the puzzle")
+                print(node.getDepth())
+                # retracePath.push(node)
+                # foundPath.push(node)
+                # while foundPath.size() > 0:
+                #     # print(node.getKey())
+                #     if node.getKey() == 1:
+                #         solvePath.append(1)
+                #         break
+                #     key = node.getKey()
+                #     solvePath.append(key)
+                #     parentKey = node.getParentKey()
+                #     node = NodeList.get(parentKey)
+                #     foundPath.pop()
+                #     foundPath.push(node)
+                # for element in reversed(solvePath):
+                #     print("-----------------------------------------")
+                #     node = NodeList.get(element)
+                #     print()
+                #     print("Node Key:", node.getKey())
+                #     print("Node State:", node.getState())
+                #     print("Action:", node.getAction())
+                #     print("Depth:", node.getDepth())
+                #     print("Cost:", node.getCost())
+                #     print()
+                #     printChildren(node.getState())
+                break
+            if node.getVisited() == True:
+                continue
+            NodeList.add(node.getKey(), node)
+            if node.getDepth() < maxDepth:
+                children = node.generateChildren()
+                node.addChildren(children)
+                for child in children:
+                    if child.getState() != node.getState():
+                        if child.getState() != node.getParentState():
+                            key = child.getKey()
+                            if key not in node.getChildKeys():
+                                node.addChildKeys(key)
+                                s.push(child)
+                                #currentDepth = child.getDepth() - 1
+
 ##### -------------------------------------------
 ##### USER INTERFACE CODE
 ##### -------------------------------------------
 
 while True:
-    startNode = Node(1, EASY, 0, [], "Start", 1, 0)
+    startNode = Node(1, EASY, 0, [], "Start", [], 1, 0)
     # bfs(startNode)
-    dfs(startNode)
+    #dfs(startNode)
+    IterativeDeepening(startNode)
     userInput = input("what Program do you want to run?")
     if userInput == "yes":
         #  givenKey, givenState, givenParentKey, givenParentState, givenAction, givenDepth, givenCost
-        startNode = Node(1, EASY, 0, [], "Start", 1, 0)
+        startNode = Node(1, EASY, 0, [], "Start", [], 1, 0)
         bfs(startNode)
