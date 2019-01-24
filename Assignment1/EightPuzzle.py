@@ -123,10 +123,22 @@ class Node:
             h += 1
 
     def h2(self):
-        pass
+        total = 0
+        for x in self.getState():
+            pos1 = self.getState().index(x)
+            pos2 = GOAL.index(x)
+            h = abs(pos1 - pos2)
+            total = total + h
+        return total
 
     def h3(self):
-        pass
+        total = 0
+        for x in self.getState():
+            pos1 = self.getState().index(x)
+            pos2 = GOAL.index(x)
+            h = abs(pos1 - pos2)
+            total = ((total + h) * x)
+        return total
 
     # SUCCESSOR METHOD FOR SUCCESSIVE CHILD STATES OF CURRENT STATE
     def generateChildren(self):
