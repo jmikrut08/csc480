@@ -38,6 +38,7 @@ class Node:
     action = ""
     depth = 0
     cost = 0
+    totalPathCost = 0
 
     def __init__(self, givenKey, givenState, givenParentKey, givenParentState, givenAction, givenChildKeys, givenDepth,
                  givenCost):
@@ -49,6 +50,7 @@ class Node:
         self.action = givenAction
         self.depth = givenDepth
         self.cost = givenCost
+        self.totalPathCost = givenCost
 
     def addChildren(self, givenChildren):
         self.children = givenChildren
@@ -79,6 +81,12 @@ class Node:
 
     def getCost(self):
         return self.cost
+
+    def getTotalPathCost(self):
+        return self.totalPathCost
+
+    def addTotalCost(self, x):
+        self.totalPathCost += x
 
     def getParentState(self):
         return self.parentState
@@ -224,25 +232,25 @@ class Node:
             with threadLock:
                 global KEY_COUNTER
                 KEY_COUNTER += 1
-            childNode1 = Node(KEY_COUNTER, child1, self.key, self.state, action1, [], parentDepth + 1, 0)
+            childNode1 = Node(KEY_COUNTER, child1, self.key, self.state, action1, [], parentDepth + 1, cost1)
             tempChildList.append(childNode1)
         if child2 not in [self.state, self.parentState]:
             with threadLock:
                 # global keyCounter
                 KEY_COUNTER += 1
-            childNode2 = Node(KEY_COUNTER, child2, self.key, self.state, action2, [], parentDepth + 1, 0)
+            childNode2 = Node(KEY_COUNTER, child2, self.key, self.state, action2, [], parentDepth + 1, cost2)
             tempChildList.append(childNode2)
         if child3 not in [self.state, self.parentState]:
             with threadLock:
                 # global keyCounter
                 KEY_COUNTER += 1
-            childNode3 = Node(KEY_COUNTER, child3, self.key, self.state, action3, [], parentDepth + 1, 0)
+            childNode3 = Node(KEY_COUNTER, child3, self.key, self.state, action3, [], parentDepth + 1, cost3)
             tempChildList.append(childNode3)
         if child4 not in [self.state, self.parentState]:
             with threadLock:
                 # global keyCounter
                 KEY_COUNTER += 1
-            childNode4 = Node(KEY_COUNTER, child4, self.key, self.state, action4, [], parentDepth + 1, 0)
+            childNode4 = Node(KEY_COUNTER, child4, self.key, self.state, action4, [], parentDepth + 1, cost4)
             tempChildList.append(childNode4)
         # RETURNS LIST OF CHILD NODES
         return tempChildList
@@ -513,7 +521,49 @@ def IterativeDeepening(startNode):
                                 s.push(child)
 
 def UniformCost(startNode):
-    pass
+    NodeList = Graph()
+    visitedStates = []
+    NodeQueue = Queue()
+    NodeQueue.push(startNode)
+    while NodeQueue.size() > 0:
+        node = NodeQueue.pop()
+        NodeList.add(node.getKey(), node)
+       #print(node.getKey(), ":", node.getState(), ":", node.getDepth(), ":", node.getTotalPathCost())
+        if node.getState() not in visitedStates:
+            visitedStates.append(node)
+            if node.getState() == GOAL:
+                print("you found the goal!!")
+                #print(node.getKey(), ":", node.getState(), ":", node.getDepth(), ":", node.getTotalPathCost())
+                traceBack = Stack()
+                traceBack.push(node)
+                totalPathCost = 0
+                while node.getKey() > 1:
+                    parentKey = node.getParentKey()
+                    node = NodeList.get(parentKey)
+                    traceBack.push(node)
+                while traceBack.size() > 0:
+                    node = traceBack.pop()
+                    totalPathCost = totalPathCost + node.getCost()
+                    # print(node.getKey(), ":", node.getState(), ":", node.getDepth(), ":", node.getCost(), ":", totalPathCost)
+                    print("-----------------------------------------")
+                    print()
+                    print("Node Key:", node.getKey())
+                    print("Node State:", node.getState())
+                    print("Action:", node.getAction())
+                    print("Depth:", node.getDepth())
+                    print("Edge Cost:", node.getCost())
+                    print("Total Cost:", totalPathCost)
+                    print()
+                    printChildren(node.getState())
+                return
+            children = node.generateChildren()
+            for child in children:
+                child.addTotalCost(child.getCost())
+                if child.getState() not in visitedStates:
+                    NodeQueue.push(child)
+
+
+
 
 
 
@@ -530,7 +580,7 @@ def UniformCost(startNode):
 ##### -------------------------------------------
 
 while True:
-    startNode = Node(1, EASY, 0, [], "Start", [], 1, 0)
+    startNode = Node(1, MEDIUM, 0, [], "Start", [], 1, 0)
     # bfs(startNode)
     #dfs(startNode)
     #IterativeDeepening(startNode)

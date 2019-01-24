@@ -15,8 +15,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/EightPuzzle.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="209">
-              <caret line="515" column="8" selection-start-line="515" selection-start-column="8" selection-end-line="515" selection-end-column="8" />
+            <state relative-caret-position="170">
+              <caret line="582" column="30" selection-start-line="582" selection-start-column="30" selection-end-line="582" selection-end-column="30" />
             </state>
           </provider>
         </entry>
@@ -41,9 +41,9 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="318" />
-    <option name="y" value="57" />
-    <option name="width" value="1530" />
+    <option name="x" value="810" />
+    <option name="y" value="113" />
+    <option name="width" value="1007" />
     <option name="height" value="1000" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -123,10 +123,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="318" y="57" width="1530" height="1000" extended-state="0" />
+    <frame x="810" y="113" width="1007" height="1000" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15705766" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24036512" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -146,11 +146,41 @@
     </layout>
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/EightPuzzle.py</url>
+          <line>541</line>
+          <option name="timeStamp" value="57" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/EightPuzzle.py</url>
+          <line>542</line>
+          <option name="timeStamp" value="58" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/EightPuzzle.py</url>
+          <line>540</line>
+          <option name="timeStamp" value="59" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/EightPuzzle.py</url>
+          <line>539</line>
+          <option name="timeStamp" value="60" />
+        </line-breakpoint>
+      </breakpoints>
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
+    </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
-        <watch expression="visitedStates.__len__()" />
-        <watch expression="NodeList.dict.__len__()" />
-        <watch expression="node.children" />
+        <watch expression="node" />
+        <watch expression="traceBack" />
       </configuration>
     </watches-manager>
   </component>
@@ -171,8 +201,8 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/EightPuzzle.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="515" column="8" selection-start-line="515" selection-start-column="8" selection-end-line="515" selection-end-column="8" />
+        <state relative-caret-position="170">
+          <caret line="582" column="30" selection-start-line="582" selection-start-column="30" selection-end-line="582" selection-end-column="30" />
         </state>
       </provider>
     </entry>
