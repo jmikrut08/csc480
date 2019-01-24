@@ -100,6 +100,34 @@ class Node:
     def getDepth(self):
         return self.depth
 
+    def h1(self):
+        h = 0
+        state = self.getState()
+        if state[0] != 1:
+            h += 1
+        if state[1] != 2:
+            h += 1
+        if state[2] != 3:
+            h += 1
+        if state[3] != 8:
+            h += 1
+        if state[4] != 0:
+            h += 1
+        if state[5] != 4:
+            h += 1
+        if state[6] != 7:
+            h += 1
+        if state[7] != 6:
+            h += 1
+        if state[8] != 5:
+            h += 1
+
+    def h2(self):
+        pass
+
+    def h3(self):
+        pass
+
     # SUCCESSOR METHOD FOR SUCCESSIVE CHILD STATES OF CURRENT STATE
     def generateChildren(self):
         # DEPENDING ON THE CURRENT STATE, THERE ARE UP TO 4 POTENTIAL MOVES/CHILDREN
@@ -562,7 +590,8 @@ def UniformCost(startNode):
                 if child.getState() not in visitedStates:
                     NodeQueue.push(child)
 
-
+def Best(startNode):
+    pass
 
 
 
@@ -585,6 +614,7 @@ while True:
     #dfs(startNode)
     #IterativeDeepening(startNode)
     UniformCost(startNode)
+    Best(startNode)
     userInput = input("what Program do you want to run?")
     if userInput == "yes":
         #  givenKey, givenState, givenParentKey, givenParentState, givenAction, givenDepth, givenCost
