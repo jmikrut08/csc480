@@ -15,8 +15,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/EightPuzzle.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-11146">
-              <caret line="132" lean-forward="true" selection-start-line="132" selection-end-line="132" />
+            <state relative-caret-position="1151">
+              <caret line="731" column="25" selection-start-line="731" selection-start-column="25" selection-end-line="731" selection-end-column="25" />
             </state>
           </provider>
         </entry>
@@ -41,8 +41,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="809" />
-    <option name="y" value="113" />
+    <option name="x" value="817" />
+    <option name="y" value="63" />
     <option name="width" value="1007" />
     <option name="height" value="1000" />
   </component>
@@ -123,15 +123,15 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="809" y="113" width="1007" height="1000" extended-state="0" />
+    <frame x="817" y="63" width="1007" height="1000" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24036512" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24036512" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.3295964" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3295964" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39910313" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -147,28 +147,6 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/EightPuzzle.py</url>
-          <line>581</line>
-          <option name="timeStamp" value="57" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/EightPuzzle.py</url>
-          <line>582</line>
-          <option name="timeStamp" value="58" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/EightPuzzle.py</url>
-          <line>580</line>
-          <option name="timeStamp" value="59" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/EightPuzzle.py</url>
-          <line>579</line>
-          <option name="timeStamp" value="60" />
-        </line-breakpoint>
-      </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
           <properties notifyOnTerminate="true" exception="BaseException">
@@ -201,8 +179,8 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/EightPuzzle.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-11146">
-          <caret line="132" lean-forward="true" selection-start-line="132" selection-end-line="132" />
+        <state relative-caret-position="1151">
+          <caret line="731" column="25" selection-start-line="731" selection-start-column="25" selection-end-line="731" selection-end-column="25" />
         </state>
       </provider>
     </entry>

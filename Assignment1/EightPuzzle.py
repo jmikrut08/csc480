@@ -39,6 +39,7 @@ class Node:
     depth = 0
     cost = 0
     totalPathCost = 0
+    h_Cost = 0
 
     def __init__(self, givenKey, givenState, givenParentKey, givenParentState, givenAction, givenChildKeys, givenDepth,
                  givenCost):
@@ -100,9 +101,16 @@ class Node:
     def getDepth(self):
         return self.depth
 
+    def getHcost(self):
+        return self.h_Cost
+
+    def setHcost(self, cost):
+        self.h_Cost = cost
+
     def h1(self):
         h = 0
-        state = self.getState()
+        state = list(self.getState())
+        # print(state)
         if state[0] != 1:
             h += 1
         if state[1] != 2:
@@ -121,6 +129,7 @@ class Node:
             h += 1
         if state[8] != 5:
             h += 1
+        return h
 
     def h2(self):
         total = 0
@@ -296,6 +305,23 @@ class Node:
         return tempChildList
 
 
+def sortQueue(q):
+    # q = list of lists
+    # selection sort multidimensinonal list best search queue
+    for i in range(len(q)):
+        minimum = i
+
+        for j in range(i + 1, len(q)):
+            # seelct smallest h1 value in tuple.
+            if q[j][0] < q[minimum][0]:
+                minimum = j
+
+        # put it at the front
+        #print(q[minimum], q[i])
+        q[minimum], q[i] = q[i], q[minimum]
+
+    return q
+
 # QUEUE CLASS FOR FIFO UTILITIES
 class Queue:
     def __init__(self):
@@ -359,6 +385,21 @@ class Graph:
     def emptyGraph(self):
         self.dict.clear()
 
+def checkReplaceVisitedNodes(nodeList, node):
+    for element in nodeList:
+        if element.getState() == node.getState():
+            if (element.getHcost() + element.getTotalPathCost()) > (node.getHcost() + node.getTotalPathCost()):
+                loc = nodeList.index(element)
+                nodeList[loc] = node
+            return nodeList
+    return nodeList
+
+def checkVisitedNodes(nodeList, node):
+    for element in nodeList:
+        if element.getState() == node.getState():
+            if (element.getHcost() + element.getTotalPathCost()) > (node.getHcost() + node.getTotalPathCost()):
+                return True
+    return False
 
 def bfs(startNode):
     # FIFO QUEUE THAT HOLDS NODES THAT SHOULD BE SEARCHED NEXT
@@ -603,9 +644,70 @@ def UniformCost(startNode):
                     NodeQueue.push(child)
 
 def Best(startNode):
-    pass
+    NodeList = Graph()
+    bestFirst = []
+    visitedStates = []
+    bestFirst.append([startNode.h1(), startNode])
+    while len(bestFirst) > 0:
+        sortQueue(bestFirst)
+        min_h1 = bestFirst.pop(0)
+        node = min_h1[1]
+        print(node.getKey(), ":", node.getState())
+        if node.h1() == 0:
+            print("you solved the puzzle!!")
+            return
+        visitedStates.append(node.getState())
+        children = node.generateChildren()
+        for child in children:
+            if child.getState() not in visitedStates:
+                element = [child.h1(), child]
+                bestFirst.append(element)
 
+def A_STAR_1(startNode, h):
+    NodeList = Graph()
+    pathScores = []
+    visitedNodes = []
+    visitedStates = []
+    if h == 1:
+        ascore = startNode.getTotalPathCost() + startNode.h1()
+    if h == 2:
+        ascore = startNode.getTotalPathCost() + startNode.h2()
+    if h == 3:
+        ascore = startNode.getTotalPathCost() + startNode.h3()
+    pathScores.append([ascore, startNode])  # f(n) =
+    while len(pathScores) > 0:
+        sortQueue(pathScores)
+        min = pathScores.pop(0)
+        node = min[1]
+        print(node.getKey(), ":", node.getState())
+        if node.getState() == GOAL:
+            print("you solved the puzzle!!")
+            return
+        visitedNodes = checkReplaceVisitedNodes(visitedNodes, node) # checks if state is in visited states and replaces if f(n) is lower
+        visitedStates.append(node.getState())
+        children = node.generateChildren()
+        for child in children:
+            if h == 1:
+                h_cost = child.h1()
+            if h == 2:
+                h_cost = child.h2()
+            if h == 3:
+                h_cost = child.h3()
+            child.setHcost(h_cost)
+            if child.getState() not in visitedStates:
+                child.addTotalCost(child.getCost())
+                pathScores.append([child.getTotalPathCost() + h_cost, child])
+            else:
+                if checkVisitedNodes(visitedNodes, child):
+                    child.addTotalCost(child.getCost())
+                    pathScores.append([child.getTotalPathCost() + h_cost, child])
+    #print(startNode.getState())
+    #print(startNode.h1())
 
+    # list = [[4,4], [9,9], [2,2], [7,7], [1,1], [5,1]]
+    # print(list)
+    # t = sortQueue(list)
+    # print(t)
 
 
 
@@ -621,12 +723,13 @@ def Best(startNode):
 ##### -------------------------------------------
 
 while True:
-    startNode = Node(1, MEDIUM, 0, [], "Start", [], 1, 0)
+    startNode = Node(1, HARD, 0, [], "Start", [], 1, 0)
     # bfs(startNode)
     #dfs(startNode)
     #IterativeDeepening(startNode)
-    UniformCost(startNode)
-    Best(startNode)
+    #UniformCost(startNode)
+    #Best(startNode)
+    A_STAR_1(startNode, 1)
     userInput = input("what Program do you want to run?")
     if userInput == "yes":
         #  givenKey, givenState, givenParentKey, givenParentState, givenAction, givenDepth, givenCost
