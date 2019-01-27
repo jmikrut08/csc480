@@ -1,6 +1,6 @@
 # ASSIGNMENT 1 FOR CSC 480 - BY JACOB MIKRUT
 
-# LOCK FOR SYNCHRONIZING THREADS FOR KEYCOUNTER
+# LOCK FOR SYNCHRONIZING THREADS FOR KEYCOUNTER (don't think i need this, but just wanted to make sure).
 import threading
 import time
 threadLock = threading.Lock()
@@ -111,8 +111,8 @@ class Node:
     def getTotalPathCost(self):
         return self.totalPathCost
 
-    def addTotalCost(self, x):
-        self.totalPathCost += x
+    def addTotalCost(self, x, y):
+        self.totalPathCost = x + y
 
     def getParentState(self):
         return self.parentState
@@ -334,19 +334,15 @@ class Node:
 
 def sortQueue(q):
     # q = list of lists
-    # selection sort multidimensinonal list best search queue
+    # selection sort for multidimensinonal list
     for i in range(len(q)):
         minimum = i
-
         for j in range(i + 1, len(q)):
             # select smallest h1 value in tuple.
             if q[j][0] < q[minimum][0]:
                 minimum = j
-
         # put it at the front
-        #print(q[minimum], q[i])
         q[minimum], q[i] = q[i], q[minimum]
-
     return q
 
 # QUEUE CLASS FOR FIFO UTILITIES
@@ -371,23 +367,24 @@ class Queue:
     def printQueue(self):
         return self.queue
 
- # STACK DATA STRUCTURE CLASS
+ # STACK DATA STRUCTURE CLASS FOR LIFO UTILITIES
 class Stack:
     def __init__(self):
         self.items = []
 
+    # checks if stack is empty
     def isEmpty(self):
         return self.items == []
 
+    # adds item to stack
     def push(self, item):
         self.items.append(item)
 
+    # returns item
     def pop(self):
         return self.items.pop()
 
-    def peek(self):
-        return self.items[len(self.items) - 1]
-
+    # returns size of stack
     def size(self):
         return len(self.items)
 
@@ -435,79 +432,72 @@ def checkVisitedNodes(nodeList, node):
                 return True
     return False
 
+# FOR UNIFORM COST SEARCH
+# CHECKS IF STATE HAS BEEN OBSERVED THEN COMPARES THE TOTAL PATH COST
+def replaceNodeCost(nodeList, node):
+    for element in nodeList:
+        if element.getState() == node.getState():
+            if (element.getHcost() + element.getTotalPathCost()) > (node.getHcost() + node.getTotalPathCost()):
+                loc = nodeList.index(element)
+                nodeList[loc] = node
+            return nodeList
+    return nodeList
+
+def checkNodeCost(nodeList, node):
+    for element in nodeList:
+        if element.getState() == node.getState():
+            if (element.getHcost() + element.getTotalPathCost()) > (node.getHcost() + node.getTotalPathCost()):
+                return True
+    return False
+
+
+##### -------------------------------------------
+##### SEARCH ALGORITHMS
+##### -------------------------------------------
 
 # ----------- BREADTH-FIRST SEARCH ------------- #
 
 # THESE COMMENTS ARE FOR ME.
-
 def bfs(startNode):
     start = time.time()
-    # FIFO QUEUE THAT HOLDS NODES THAT SHOULD BE SEARCHED NEXT
-    searchQueue = Queue()
-    # ONCE GOAL STATE IS FOUND, NODES ARE ADDED TO FOUND PATH QUEUE
-    foundPath = Queue()
-    # DICTIONARY FOR ALL SEARCHED NODES { STATE.KEY : NODE }
-    NodeList = Graph()
-    # STATE CHECKING TO NARROW DOWN REDUNDANCY.
-    checkedStates = []
-    # ALLOWS ME TO ITERATE THROUGH FOUND PATH IN REVERSE
-    solvePath = []
-    # BEGINS SEARCHING GRAPH/TREE WITH TOP NODE
+    searchQueue = Queue() # FIFO queue that hold nodes that should be searched next
+    NodeList = Graph()  # dictionary for all searched nodes { STATE.KEY : NODE }
+    checkedStates = []  # state checking to reduce redundancy.
+
+    # adding initial node to queue
     searchQueue.push(startNode)
-    # ALLOWS TO DOUBLE CHECKING INITIAL STATE IN CASE CHANGING DIFFICULTIES.
+
+    # observing current node state
     while searchQueue.size() > 0:
         node = searchQueue.pop()
-        # PRINTS KEY FOR NODE THAT IS CURRENTLY BEING SEARCHED/VISITED
-        print("Key:", node.getKey(), " :  State:", node.getState(), ":  Depth:", node.getDepth())
-        # ADDS STATE TO CHECK STATES
-        checkedStates.append(node.getState())
-        # ADDS CURRENT NODE TO GRAPH/DICTIONARY OF ALL SEARCHED NODES
-        NodeList.add(node.getKey(), node)
-        # IF WE HAVEN'T SEARCHED THIS NODE / DOESN'T EQUAL GOAL STATE, WE GENERATE ITS CHILD STATES
-        if node.getVisited() == False:
-            # IF STATE EQUALS GOAL STATE -> CONTINUE DOWN TO ELSE BLOCK
-            if node.getState() != GOAL:
-                # CHANGES BOOLEAN STORED IN NODE -> VISITED = TRUE
-                node.setVisited()
-                # GENERATES AND RETURN LIST OF CHILD STATE NODES
-                children = node.generateChildren()
-                for element in children:
-                    # FOR EACH CHILD CREATED, CHECKS IF WE'VE SEEN THE STATE BEFORE,
-                    # IF STATE HASN'T BEEN SEARCHED BEFORE, ITS ADDED TO SEARCH QUEUE
-                    if element.getState() not in checkedStates:
-                        searchQueue.push(element)
-            # IF STATE EQUALS GOAL STATE
-            else:
-                print("you've solved the puzzle")
-                printFinalPath(NodeList, node)
-                # foundPath.push(node)
-                # while foundPath.size() > 0:
-                #     #print(node.getKey())
-                #     if node.getKey() == 1:
-                #         solvePath.append(1)
-                #         break
-                #     key = node.getKey()
-                #     solvePath.append(key)
-                #     parentKey = node.getParentKey()
-                #     node = NodeList.get(parentKey)
-                #     foundPath.pop()
-                #     foundPath.push(node)
-                # for element in reversed(solvePath):
-                #     print("-----------------------------------------")
-                #     node = NodeList.get(element)
-                #     print()
-                #     print("Node Key:", node.getKey())
-                #     print("Node State:", node.getState())
-                #     print("Action:", node.getAction())
-                #     print("Depth:", node.getDepth())
-                #     print("Cost:", node.getCost())
-                #     print()
-                #     printChildren(node.getState())
-                end = time.time()
-                print("\nTotal Runtime:", end - start, "seconds")
-                print("Total Nodes visited:", NodeList.size(), "\n")
-                return
+        print("Key:", node.getKey(), " :  State:", node.getState(), ":  Depth:", node.getDepth(), ":  Queue Size:", searchQueue.size())
 
+        # adds node to check states and to node list
+        checkedStates.append(node.getState())
+        NodeList.add(node.getKey(), node)
+
+        # if node is a goal state
+        if node.getState() == GOAL:
+            print("you've solved the puzzle")
+
+            # prints solution path
+            printFinalPath(NodeList, node)
+
+            # prints and calculates total runtime.
+            end = time.time()
+            print("\nTotal Runtime:", end - start, "seconds")
+            print("Total Nodes visited:", NodeList.size(), "\n")
+            return
+
+        # loop for adding child states to the queue
+        else:
+            node.setVisited()
+            children = node.generateChildren()
+            for element in children:
+            # for each child created, checks if we've seen state before
+            # if state hasn't been seen, added to search queue
+                if element.getState() not in checkedStates:
+                    searchQueue.push(element)
 
 # ----------- DEPTH-FIRST SEARCH ------------- #
 
@@ -516,70 +506,53 @@ def dfs(startNode):
     s = Stack()
     visitedStates = []
     NodeList = Graph()
-    retracePath = Queue()
-    foundPath = Stack()
-    solvePath = []
     s.push(startNode)
+
     while s.size() > 0:
-        #print(s.size())
+
+        # pops element LIFO
         node = s.pop()
-        #print(node.getState())
         if node.getState() in visitedStates:
             continue
         NodeList.add(node.getKey(), node)
-        print("Key:", node.getKey(), " :  State:", node.getState(), ":  Depth:", node.getDepth())
+        print("Key:", node.getKey(), " :  State:", node.getState(), ":  Depth:", node.getDepth(), ":  Stack Size:", s.size())
+
+        # found goal state
         if node.getState() == GOAL:
             print("you have solved the puzzle")
 
+            # prints solution path
             printFinalPath(NodeList, node)
 
-            # retracePath.push(node)
-            # foundPath.push(node)
-            # while foundPath.size() > 0:
-            #     # print(node.getKey())
-            #     if node.getKey() == 1:
-            #         solvePath.append(1)
-            #         break
-            #     key = node.getKey()
-            #     solvePath.append(key)
-            #     parentKey = node.getParentKey()
-            #     node = NodeList.get(parentKey)
-            #     foundPath.pop()
-            #     foundPath.push(node)
-            # for element in reversed(solvePath):
-            #     print("-----------------------------------------")
-            #     node = NodeList.get(element)
-            #     print()
-            #     print("Node Key:", node.getKey())
-            #     print("Node State:", node.getState())
-            #     print("Action:", node.getAction())
-            #     print("Depth:", node.getDepth())
-            #     print("Cost:", node.getCost())
-            #     print()
-            #     printChildren(node.getState())
+            # calculates runtime
             end = time.time()
             print("\nTotal Runtime:", end - start, "seconds")
             print("Total Nodes visited:", NodeList.size(), "\n")
             return
+        # loop for adding child nodes to stack
         if node.getVisited() == False:
+            # if unseen state
             if node.getState() not in visitedStates:
                 visitedStates.append(node.getState())
                 node.setVisited()
+
+                # generate children with successor funtion
                 children = node.generateChildren()
                 node.addChildren(children)
+                # reversed children list because i was traversing the wrong side of the tree, so this hurried up the solution
                 for child in reversed(children):
                     key = child.getKey()
+                    # over complicated because i had an error and this was how i caught it.
                     if key not in node.getChildKeys():
                         node.addChildKeys(key)
                         s.push(child)
-
 
 # ----------- ITERATIVE DEEPENING ------------- #
 
 def IterativeDeepening(startNode):
     start = time.time()
     currentDepth = 0
-    maxDepth = 1
+    maxDepth = 1  #  sets the max dep search is allowed to search. dfs with depth limit
     s = Stack()
     NodeList = Graph()
     while currentDepth < 1000:
@@ -587,20 +560,23 @@ def IterativeDeepening(startNode):
         NodeList.emptyGraph()
         s.emptyStack()
         s.push(startNode)
+
         while currentDepth <= maxDepth:
             if s.size() > 0:
                 node = s.pop()
             else:
                 break
-            print("Key:", node.getKey(), " :  State:", node.getState(), ":  Depth:", node.getDepth())
+            print("Key:", node.getKey(), " :  State:", node.getState(), ":  Depth:", node.getDepth(), ":  Stack Size:", s.size())
             NodeList.add(node.getKey(), node)
+
+            # found goal node
             if node.getState() == GOAL:
                 print("you have solved the puzzle")
 
-                # PRINTS SOLUTION PATH
+                # prints solution path
                 printFinalPath(NodeList, node)
 
-                # CALCULATES AND PRINTS TOTAL RUNTIME.
+                # calculates and prints total run time.
                 end = time.time()
                 print("\nTotal Runtime:", end - start, "seconds")
                 print("Total Nodes visited:", NodeList.size(), "\n")
@@ -610,11 +586,14 @@ def IterativeDeepening(startNode):
             if node.getVisited() == True:
                 continue
             NodeList.add(node.getKey(), node)
+            # make sure to only add children within depth limit
             if node.getDepth() < maxDepth:
+                # should be same as dfs from here
                 children = node.generateChildren()
                 node.addChildren(children)
                 for child in children:
                     if child.getState() != node.getState():
+                        # extra check here for checking duplicating states. redundant.
                         if child.getState() != node.getParentState():
                             key = child.getKey()
                             if key not in node.getChildKeys():
@@ -622,37 +601,58 @@ def IterativeDeepening(startNode):
                                 s.push(child)
 
 # ----------- UNIFORM COST SEARCH ------------- #
-
+# Last three algos are the same except, UC uses path weight as cost, best uses only the Heuristic, and A* uses both.
 def UniformCost(startNode):
     start = time.time()
     NodeList = Graph()
     visitedStates = []
-    NodeQueue = Queue()
-    NodeQueue.push(startNode)
+    visitedStatesWithCost = []
+    costList = []
+    costList.append([startNode.getTotalPathCost(), startNode])
 
-    while NodeQueue.size() > 0:
-        node = NodeQueue.pop()
+    while len(costList) > 0:
+        sortQueue(costList)
+        min = costList.pop(0)
+        node = min[1]
         NodeList.add(node.getKey(), node)
-        print(node.getKey(), ":", node.getState(), ":", node.getDepth(), ":", node.getTotalPathCost())
+        print("Key:", node.getKey(), " :  State:", node.getState(), ":  Cost:", node.getTotalPathCost(), ":  Queue Size:", len(costList))
 
+        # found goal state
+        if node.getState() == GOAL:
+            print("you found the goal!!")
+            # print solution path
+            printFinalPath(NodeList, node)
+            # calculates and prints runtime
+            end = time.time()
+            print("\nTotal Runtime:", end - start, "seconds")
+            print("Total Nodes visited:", NodeList.size())
+            print("Size of Queue:", )
+            return
+        # expand node
+        children = node.generateChildren()
+        # once expanded, add node to visited list
         if node.getState() not in visitedStates:
-            visitedStates.append(node)
-
-            if node.getState() == GOAL:
-                print("you found the goal!!")
-                # PRINTS SOLUTION PATH
-                printFinalPath(NodeList, node)
-                # CALCULATES AND PRINTS TOTAL RUNTIME.
-                end = time.time()
-                print("\nTotal Runtime:", end - start, "seconds")
-                print("Total Nodes visited:", NodeList.size(), "\n")
-                return
-
-            children = node.generateChildren()
-            for child in children:
-                child.addTotalCost(child.getCost())
-                if child.getState() not in visitedStates:
-                    NodeQueue.push(child)
+            visitedStates.append(node.getState())
+            visitedStatesWithCost.append([node.getTotalPathCost(), node.getState()])
+        else:
+            # compares total cost of current node and previous node of same state
+            for element in visitedStatesWithCost:
+                if node.getState() == element[1]:
+                    if node.getTotalPathCost() < element[0]:
+                        loc = visitedStatesWithCost.index(element)
+                        visitedStatesWithCost[loc] = [node.getTotalPathCost(), node.getState()]
+        # add cost to total path cost for node
+        for child in children:
+            child.addTotalCost(child.getCost(), node.getTotalPathCost())
+            # simple add state and cost to to queue if haven't been seen before
+            if child.getState() not in visitedStates:
+                costList.append([child.getTotalPathCost(), child])
+            else:
+                # compares total costs of states before adding child on queue
+                for element in visitedStatesWithCost:
+                    if child.getState() == element[1]:
+                        if child.getTotalPathCost() < element[0]:
+                            costList.append([child.getTotalPathCost(), child])
 
 # ----------- (GREEDY) BEST-FIRST SEARCH ------------- #
 
@@ -661,13 +661,16 @@ def Best(startNode):
     NodeList = Graph()
     bestFirst = []
     visitedStates = []
+    hCostList = []
     bestFirst.append([startNode.h1(), startNode])
     while len(bestFirst) > 0:
         sortQueue(bestFirst)
         min_h1 = bestFirst.pop(0)
         node = min_h1[1]
-        print("Key:", node.getKey(), " :  State:", node.getState(), ":  Depth:", node.getDepth())
+        print("Key:", node.getKey(), " :  State:", node.getState(), ":  Depth:", node.getDepth(), ":  Queue Size:", len(bestFirst))
         NodeList.add(node.getKey(), node)
+
+        # FOUND GOAL NODE
         if node.h1() == 0:
             print("\nyou solved the puzzle!!\n")
 
@@ -679,22 +682,35 @@ def Best(startNode):
             print("\nTotal Runtime:", end - start, "seconds")
             print("Total Nodes visited:", NodeList.size(), "\n")
             return
-
-        visitedStates.append(node.getState())
+        if node.getState() not in visitedStates:
+            visitedStates.append(node.getState())
+            hCostList.append([node.h1(), node.getState()])
+        else:
+            for element in hCostList:
+                if node.getState() == element[1]:
+                    if node.h1() < element[0]:
+                        loc = hCostList.index(element)
+                        hCostList[loc] = [node.getTotalPathCost(), node.getState()]
         children = node.generateChildren()
         for child in children:
             if child.getState() not in visitedStates:
                 element = [child.h1(), child]
                 bestFirst.append(element)
+            else:
+                # compares total costs of states before adding child on queue
+                for element in hCostList:
+                    if child.getState() == element[1]:
+                        if child.getTotalPathCost() < element[0]:
+                            bestFirst.append([child.h1(), child])
 
 # ----------- A* SEARCH ------------- #
 
 def A_STAR(startNode, h):
-    start = time.time()
+    start = time.time()  #start calculating execution time
     NodeList = Graph()  # {node.getKey() : node}
-    pathScores = []  # [ [A* score, node] ] - sorted by A*
-    visitedNodes = []  # [node.getState()] - allows for quicker state checking.
-    visitedStates = []
+    pathScores = []  # [ [A* score, node] ] - sorted by A* score
+    visitedNodes = []  # [node.getState()] - used to compare f(n) of nodes with same state
+    visitedStates = []  # [node.getState()] - allows for quicker checking to see if node has been seen or not
 
     # depending on which heuristic you pick in user interface
     if h == 1:
@@ -710,7 +726,9 @@ def A_STAR(startNode, h):
         min = pathScores.pop(0)
         node = min[1]
         NodeList.add(node.getKey(), node)
-        print("Key:", node.getKey(), " :  State:", node.getState(), ":  Depth:", node.getDepth())
+        print("Key:", node.getKey(), " :  State:", node.getState(), ":  Depth:", node.getDepth(), ":  Queue Size:", len(pathScores))
+
+        # FOUND GOAL NODE
         if node.getState() == GOAL:
             print("\nyou solved the puzzle!!\n")
             # prints solution path
@@ -720,9 +738,12 @@ def A_STAR(startNode, h):
             print("\nTotal Runtime:", end - start, "seconds")
             print("Total Nodes visited:", NodeList.size(), "\n")
             return
-        visitedNodes = checkReplaceVisitedNodes(visitedNodes, node) # checks if state is in visited states and replaces if f(n) is lower
+
+        # checks if state is in visited states and replaces if f(n) is lower
+        visitedNodes = checkReplaceVisitedNodes(visitedNodes, node)
         visitedStates.append(node.getState())
         children = node.generateChildren()
+        # changes with flag inputed via user interface
         for child in children:
             if h == 1:
                 h_cost = child.h1()
@@ -732,29 +753,59 @@ def A_STAR(startNode, h):
                 h_cost = child.h3()
             child.setHcost(h_cost)
             if child.getState() not in visitedStates:
-                child.addTotalCost(child.getCost())
+                child.addTotalCost(child.getCost(), node.getTotalPathCost())
                 pathScores.append([child.getTotalPathCost() + h_cost, child])
             else:
                 if checkVisitedNodes(visitedNodes, child):
                     child.addTotalCost(child.getCost())
                     pathScores.append([child.getTotalPathCost() + h_cost, child])
 
-
-
 ##### -------------------------------------------
 ##### USER INTERFACE CODE
 ##### -------------------------------------------
 
 while True:
-    startNode = Node(1, EASY, 0, [], "Start", [], 1, 0)
-    #bfs(startNode)
-    #dfs(startNode)
-    IterativeDeepening(startNode)
-    #UniformCost(startNode)
-    #Best(startNode)
-    #A_STAR(startNode, 1)
-    userInput = input("what Program do you want to run?")
-    if userInput == "yes":
-        #  givenKey, givenState, givenParentKey, givenParentState, givenAction, givenDepth, givenCost
+    difficulty = input("Choose a difficulty (Enter the corresponding number):\n1). EASY\n2). MEDIUM\n3). HARD\n")
+    if difficulty == "1":
         startNode = Node(1, EASY, 0, [], "Start", [], 1, 0)
+        break
+    if difficulty == "2":
+        startNode = Node(1, MEDIUM, 0, [], "Start", [], 1, 0)
+        break
+    if difficulty == "3":
+        startNode = Node(1, HARD, 0, [], "Start", [], 1, 0)
+        break
+
+while True:
+    userInput = input("What search algorithm do you wish to run?\n1). BREATH-FIRST SEARCH\n2). DEPTH-FIRST SEARCH\n3). ITERATIVE DEEPENING\n4). UNIFORM COST SEARCH\n5). (GREEDY) BEST-FIRST SEARCH\n6). A* SEARCH\n")
+    if userInput == "1":
         bfs(startNode)
+        break
+    if userInput == "2":
+        dfs(startNode)
+        break
+    if userInput == "3":
+        IterativeDeepening(startNode)
+        break
+    if userInput == "4":
+        UniformCost(startNode)
+        break
+    if userInput == "5":
+        Best(startNode)
+        break
+    if userInput == "6":
+        while True:
+            hValue = input("Which Heuristic do you want to run with A* Search?\n1). HEURISTIC #1 \n2). HEURISTIC #2\n3). HEURISTIC #3\n")
+            if hValue == "1":
+                A_STAR(startNode, 1)
+                break
+            if hValue == "2":
+                A_STAR(startNode, 2)
+                break
+            if hValue == "3":
+                A_STAR(startNode, 3)
+                break
+    if hValue in ["1", "2", "3"]:
+        break
+
+
