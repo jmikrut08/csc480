@@ -15,11 +15,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/EightPuzzle.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="296">
-              <caret line="631" column="13" selection-start-line="631" selection-start-column="13" selection-end-line="631" selection-end-column="13" />
+            <state relative-caret-position="432">
+              <caret line="699" column="51" selection-start-line="699" selection-start-column="51" selection-end-line="699" selection-end-column="51" />
               <folding>
                 <element signature="e#94#110#0" expanded="true" />
-                <element signature="e#13197#13246#0" />
+                <element signature="e#12962#14201#0" />
               </folding>
             </state>
           </provider>
@@ -128,6 +128,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="2" y="23" width="2332" height="1611" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.10255301" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -190,11 +191,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/EightPuzzle.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="296">
-          <caret line="631" column="13" selection-start-line="631" selection-start-column="13" selection-end-line="631" selection-end-column="13" />
+        <state relative-caret-position="432">
+          <caret line="699" column="51" selection-start-line="699" selection-start-column="51" selection-end-line="699" selection-end-column="51" />
           <folding>
             <element signature="e#94#110#0" expanded="true" />
-            <element signature="e#13197#13246#0" />
+            <element signature="e#12962#14201#0" />
           </folding>
         </state>
       </provider>

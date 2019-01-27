@@ -457,7 +457,6 @@ def checkNodeCost(nodeList, node):
 
 # ----------- BREADTH-FIRST SEARCH ------------- #
 
-# THESE COMMENTS ARE FOR ME.
 def bfs(startNode):
     start = time.time()
     searchQueue = Queue() # FIFO queue that hold nodes that should be searched next
@@ -606,16 +605,16 @@ def IterativeDeepening(startNode):
 # Last three algos are the same except, UC uses path weight as cost, best uses only the Heuristic, and A* uses both.
 def UniformCost(startNode):
     start = time.time()
-    nodesPopped = 0
-    NodeList = Graph()
-    visitedStates = []
-    visitedStatesWithCost = []
-    costList = []
+    nodesPopped = 0  # used for record keeping and for write up on number of items popped of sorted queue (costList)
+    NodeList = Graph()  # keeps track of nodes visited and seen
+    visitedStates = []  # keeps track of states
+    visitedStatesWithCost = []  # keeps track of states with their lowest cost cost - [ [total Path cost, state] ]
+    costList = []  # Sorted queue based on total path cost [ [total cost, node] ]
     costList.append([startNode.getTotalPathCost(), startNode])
 
     while len(costList) > 0:
         sortQueue(costList)
-        min = costList.pop(0)
+        min = costList.pop(0) # pops first element off sorted list.
         nodesPopped += 1
         node = min[1]
         NodeList.add(node.getKey(), node)
@@ -629,7 +628,7 @@ def UniformCost(startNode):
             # calculates and prints runtime
             end = time.time()
             print("\nTotal Runtime:", end - start, "seconds")
-            #print("Total Nodes visited:", NodeList.size())
+            # print("Total Nodes visited:", NodeList.size())
             print("Total Nodes Popped:", nodesPopped, "\n")
             return
         # expand node
@@ -645,7 +644,7 @@ def UniformCost(startNode):
                     if node.getTotalPathCost() < element[0]:
                         loc = visitedStatesWithCost.index(element)
                         visitedStatesWithCost[loc] = [node.getTotalPathCost(), node.getState()]
-        # add cost to total path cost for node
+        # add edge cost to total path cost for each child node
         for child in children:
             child.addTotalCost(child.getCost(), node.getTotalPathCost())
             # simple add state and cost to to queue if haven't been seen before
@@ -662,16 +661,18 @@ def UniformCost(startNode):
 
 def Best(startNode):
     start = time.time()
-    NodeList = Graph()
-    bestFirst = []
-    visitedStates = []
-    hCostList = []
+    nodesPopped = 0  # counts number of items popped off sorted queue
+    NodeList = Graph()  # stores each node visited and seen { node key : node }
+    bestFirst = []  # sorted queue storing
+    visitedStates = []  # keeps track of states
+    hCostList = []  # keeps track of states with their lowest h1() [ [node.h1(), node.getState] ]
     bestFirst.append([startNode.h1(), startNode])
     while len(bestFirst) > 0:
         sortQueue(bestFirst)
         min_h1 = bestFirst.pop(0)
+        nodesPopped += 1
         node = min_h1[1]
-        print("Key:", node.getKey(), " :  State:", node.getState(), ":  Depth:", node.getDepth(), ":  Queue Size:", len(bestFirst))
+        print("Key:", node.getKey(), " :  Nodes Popped:", nodesPopped, " :  State:", node.getState(), ":  Depth:", node.getDepth(), ":  Queue Size:", len(bestFirst))
         NodeList.add(node.getKey(), node)
 
         # FOUND GOAL NODE
@@ -684,8 +685,10 @@ def Best(startNode):
             # CALCULATES AND PRINTS TOTAL RUNTIME.
             end = time.time()
             print("\nTotal Runtime:", end - start, "seconds")
-            print("Total Nodes visited:", NodeList.size(), "\n")
+            print("Total Nodes Popped:", nodesPopped, "\n")
             return
+
+        children = node.generateChildren()
         if node.getState() not in visitedStates:
             visitedStates.append(node.getState())
             hCostList.append([node.h1(), node.getState()])
@@ -694,8 +697,7 @@ def Best(startNode):
                 if node.getState() == element[1]:
                     if node.h1() < element[0]:
                         loc = hCostList.index(element)
-                        hCostList[loc] = [node.getTotalPathCost(), node.getState()]
-        children = node.generateChildren()
+                        hCostList[loc] = [node.h1(), node.getState()]
         for child in children:
             if child.getState() not in visitedStates:
                 element = [child.h1(), child]
@@ -710,6 +712,7 @@ def Best(startNode):
 # ----------- A* SEARCH ------------- #
 
 def A_STAR(startNode, h):
+    nodesPopped = 0
     start = time.time()  #start calculating execution time
     NodeList = Graph()  # {node.getKey() : node}
     pathScores = []  # [ [A* score, node] ] - sorted by A* score
@@ -728,9 +731,10 @@ def A_STAR(startNode, h):
     while len(pathScores) > 0:
         sortQueue(pathScores)
         min = pathScores.pop(0)
+        nodesPopped += 1
         node = min[1]
         NodeList.add(node.getKey(), node)
-        print("Key:", node.getKey(), " :  State:", node.getState(), ":  Depth:", node.getDepth(), ":  Queue Size:", len(pathScores))
+        print("Key:", node.getKey(), " :  Nodes Popped:", nodesPopped, " :  State:", node.getState(), ":  Depth:", node.getDepth(), ":  Queue Size:", len(pathScores))
 
         # FOUND GOAL NODE
         if node.getState() == GOAL:
@@ -740,7 +744,7 @@ def A_STAR(startNode, h):
             # calculates and prints runtime
             end = time.time()
             print("\nTotal Runtime:", end - start, "seconds")
-            print("Total Nodes visited:", NodeList.size(), "\n")
+            print("Total Nodes Popped:", nodesPopped, "\n")
             return
 
         # checks if state is in visited states and replaces if f(n) is lower
