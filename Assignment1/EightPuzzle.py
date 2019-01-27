@@ -563,7 +563,7 @@ def IterativeDeepening(startNode):
 
         while currentDepth <= maxDepth:
             if s.size() > 0:
-                node = s.pop()
+                node = s.pop()  # pops last element on list
                 nodesPopped += 1
             else:
                 break
@@ -701,6 +701,7 @@ def Best(startNode):
         for child in children:
             if child.getState() not in visitedStates:
                 element = [child.h1(), child]
+                child.setHcost(child.h1())
                 bestFirst.append(element)
             else:
                 # compares total costs of states before adding child on queue
@@ -712,10 +713,10 @@ def Best(startNode):
 # ----------- A* SEARCH ------------- #
 
 def A_STAR(startNode, h):
-    nodesPopped = 0
+    nodesPopped = 0  # counter for items popped off front of sorted list.
     start = time.time()  #start calculating execution time
     NodeList = Graph()  # {node.getKey() : node}
-    pathScores = []  # [ [A* score, node] ] - sorted by A* score
+    pathScores = []  # [ [A* score, node] ] - sorted by A* score a.k.a. f(n)
     visitedNodes = []  # [node.getState()] - used to compare f(n) of nodes with same state
     visitedStates = []  # [node.getState()] - allows for quicker checking to see if node has been seen or not
 
@@ -726,7 +727,8 @@ def A_STAR(startNode, h):
         ascore = startNode.getTotalPathCost() + startNode.h2()
     if h == 3:
         ascore = startNode.getTotalPathCost() + startNode.h3()
-    pathScores.append([ascore, startNode])  # f(n) =
+
+    pathScores.append([ascore, startNode])  # f(n) = total path cost + heuristic cost of that node
 
     while len(pathScores) > 0:
         sortQueue(pathScores)

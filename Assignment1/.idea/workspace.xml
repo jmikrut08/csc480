@@ -15,8 +15,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/EightPuzzle.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="432">
-              <caret line="699" column="51" selection-start-line="699" selection-start-column="51" selection-end-line="699" selection-end-column="51" />
+            <state relative-caret-position="431">
+              <caret line="565" column="59" selection-start-line="565" selection-start-column="59" selection-end-line="565" selection-end-column="59" />
               <folding>
                 <element signature="e#94#110#0" expanded="true" />
                 <element signature="e#12962#14201#0" />
@@ -47,7 +47,7 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="2" />
     <option name="y" value="23" />
-    <option name="width" value="2332" />
+    <option name="width" value="1969" />
     <option name="height" value="1611" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -127,10 +127,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="2" y="23" width="2332" height="1611" extended-state="0" />
+    <frame x="2" y="23" width="1969" height="1611" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.10255301" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12166324" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -191,8 +191,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/EightPuzzle.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="699" column="51" selection-start-line="699" selection-start-column="51" selection-end-line="699" selection-end-column="51" />
+        <state relative-caret-position="431">
+          <caret line="565" column="59" selection-start-line="565" selection-start-column="59" selection-end-line="565" selection-end-column="59" />
           <folding>
             <element signature="e#94#110#0" expanded="true" />
             <element signature="e#12962#14201#0" />
