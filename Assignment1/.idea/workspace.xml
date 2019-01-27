@@ -15,8 +15,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/EightPuzzle.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="632">
-              <caret line="482" column="34" lean-forward="true" selection-start-line="482" selection-start-column="34" selection-end-line="482" selection-end-column="34" />
+            <state relative-caret-position="296">
+              <caret line="631" column="13" selection-start-line="631" selection-start-column="13" selection-end-line="631" selection-end-column="13" />
               <folding>
                 <element signature="e#94#110#0" expanded="true" />
                 <element signature="e#13197#13246#0" />
@@ -134,7 +134,7 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.17631404" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.44045243" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39853626" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -190,8 +190,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/EightPuzzle.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="632">
-          <caret line="482" column="34" lean-forward="true" selection-start-line="482" selection-start-column="34" selection-end-line="482" selection-end-column="34" />
+        <state relative-caret-position="296">
+          <caret line="631" column="13" selection-start-line="631" selection-start-column="13" selection-end-line="631" selection-end-column="13" />
           <folding>
             <element signature="e#94#110#0" expanded="true" />
             <element signature="e#13197#13246#0" />

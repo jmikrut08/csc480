@@ -551,6 +551,7 @@ def dfs(startNode):
 
 def IterativeDeepening(startNode):
     start = time.time()
+    nodesPopped = 0
     currentDepth = 0
     maxDepth = 1  #  sets the max dep search is allowed to search. dfs with depth limit
     s = Stack()
@@ -564,9 +565,10 @@ def IterativeDeepening(startNode):
         while currentDepth <= maxDepth:
             if s.size() > 0:
                 node = s.pop()
+                nodesPopped += 1
             else:
                 break
-            print("Key:", node.getKey(), " :  State:", node.getState(), ":  Depth:", node.getDepth(), ":  Stack Size:", s.size())
+            print("Key:", node.getKey(), " :  Nodes Popped:", nodesPopped,  " :  State:", node.getState(), ":  Depth:", node.getDepth(), ":  Stack Size:", s.size())
             NodeList.add(node.getKey(), node)
 
             # found goal node
@@ -579,7 +581,7 @@ def IterativeDeepening(startNode):
                 # calculates and prints total run time.
                 end = time.time()
                 print("\nTotal Runtime:", end - start, "seconds")
-                print("Total Nodes visited:", NodeList.size(), "\n")
+                print("Total Nodes Popped:", nodesPopped, "\n")
                 return
 
             # meat and potatoes
@@ -604,6 +606,7 @@ def IterativeDeepening(startNode):
 # Last three algos are the same except, UC uses path weight as cost, best uses only the Heuristic, and A* uses both.
 def UniformCost(startNode):
     start = time.time()
+    nodesPopped = 0
     NodeList = Graph()
     visitedStates = []
     visitedStatesWithCost = []
@@ -613,9 +616,10 @@ def UniformCost(startNode):
     while len(costList) > 0:
         sortQueue(costList)
         min = costList.pop(0)
+        nodesPopped += 1
         node = min[1]
         NodeList.add(node.getKey(), node)
-        print("Key:", node.getKey(), " :  State:", node.getState(), ":  Cost:", node.getTotalPathCost(), ":  Queue Size:", len(costList))
+        print("Key:", node.getKey(), " :  Nodes Popped:", nodesPopped,   " :  State:", node.getState(), ":  Cost:", node.getTotalPathCost(), ":  Queue Size:", len(costList))
 
         # found goal state
         if node.getState() == GOAL:
@@ -625,8 +629,8 @@ def UniformCost(startNode):
             # calculates and prints runtime
             end = time.time()
             print("\nTotal Runtime:", end - start, "seconds")
-            print("Total Nodes visited:", NodeList.size())
-            print("Size of Queue:", )
+            #print("Total Nodes visited:", NodeList.size())
+            print("Total Nodes Popped:", nodesPopped, "\n")
             return
         # expand node
         children = node.generateChildren()
