@@ -459,6 +459,7 @@ def checkNodeCost(nodeList, node):
 
 def bfs(startNode):
     start = time.time()
+    nodesPopped = 0
     searchQueue = Queue() # FIFO queue that hold nodes that should be searched next
     NodeList = Graph()  # dictionary for all searched nodes { STATE.KEY : NODE }
     checkedStates = []  # state checking to reduce redundancy.
@@ -469,7 +470,9 @@ def bfs(startNode):
     # observing current node state
     while searchQueue.size() > 0:
         node = searchQueue.pop()
-        print("Key:", node.getKey(), " :  State:", node.getState(), ":  Depth:", node.getDepth(), ":  Queue Size:", searchQueue.size())
+        nodesPopped += 1
+        print("Key:", node.getKey(), " :  Nodes Popped:", nodesPopped, " :  State:", node.getState(), ":  Depth:", node.getDepth(), ":  Queue Size:", searchQueue.size())
+
 
         # adds node to check states and to node list
         checkedStates.append(node.getState())
@@ -485,7 +488,7 @@ def bfs(startNode):
             # prints and calculates total runtime.
             end = time.time()
             print("\nTotal Runtime:", end - start, "seconds")
-            print("Total Nodes visited:", NodeList.size(), "\n")
+            print("Total Nodes Popped:", nodesPopped, "\n")
             return
 
         # loop for adding child states to the queue
@@ -502,6 +505,7 @@ def bfs(startNode):
 
 def dfs(startNode):
     start = time.time()
+    nodesPopped = 0
     s = Stack()
     visitedStates = []
     NodeList = Graph()
@@ -511,10 +515,11 @@ def dfs(startNode):
 
         # pops element LIFO
         node = s.pop()
+        nodesPopped += 1
         if node.getState() in visitedStates:
             continue
         NodeList.add(node.getKey(), node)
-        print("Key:", node.getKey(), " :  State:", node.getState(), ":  Depth:", node.getDepth(), ":  Stack Size:", s.size())
+        print("Key:", node.getKey(), " :  Nodes Popped:", nodesPopped, " :  State:", node.getState(), ":  Depth:", node.getDepth(), ":  Stack Size:", s.size())
 
         # found goal state
         if node.getState() == GOAL:
@@ -526,7 +531,7 @@ def dfs(startNode):
             # calculates runtime
             end = time.time()
             print("\nTotal Runtime:", end - start, "seconds")
-            print("Total Nodes visited:", NodeList.size(), "\n")
+            print("Total Nodes Popped:", nodesPopped, "\n")
             return
         # loop for adding child nodes to stack
         if node.getVisited() == False:

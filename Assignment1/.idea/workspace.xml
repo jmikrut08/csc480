@@ -15,11 +15,10 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/EightPuzzle.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="431">
-              <caret line="565" column="59" selection-start-line="565" selection-start-column="59" selection-end-line="565" selection-end-column="59" />
+            <state relative-caret-position="-182">
+              <caret line="577" column="29" lean-forward="true" selection-start-line="577" selection-start-column="29" selection-end-line="577" selection-end-column="29" />
               <folding>
                 <element signature="e#94#110#0" expanded="true" />
-                <element signature="e#12962#14201#0" />
               </folding>
             </state>
           </provider>
@@ -128,7 +127,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="2" y="23" width="1969" height="1611" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12166324" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -191,11 +189,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/EightPuzzle.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="431">
-          <caret line="565" column="59" selection-start-line="565" selection-start-column="59" selection-end-line="565" selection-end-column="59" />
+        <state relative-caret-position="-182">
+          <caret line="577" column="29" lean-forward="true" selection-start-line="577" selection-start-column="29" selection-end-line="577" selection-end-column="29" />
           <folding>
             <element signature="e#94#110#0" expanded="true" />
-            <element signature="e#12962#14201#0" />
           </folding>
         </state>
       </provider>
