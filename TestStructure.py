@@ -29,5 +29,35 @@ for x in range(2 * size + 1):
     # print(BOARD[x])
     # print("calculating")
 # print(BOARD)
+print("\n\n\n")
 
+
+print("Index\t", end='')
+
+for z in range(2 * size + 1):
+    print(z,"\t", end='')
+
+print("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
+
+dotDash = 1
+NewLineOffSet = 1
+BOARD_POSITION = []
+for x in range(2 * size + 1):
+    BOARD_POSITION.append([])
+    print(" ", x, "]\t", end='')
+    for y in range (2 * size + 1):
+        dotDash = 1
+        if NewLineOffSet % 2 != 0:
+            BOARD_POSITION[x].append(".")
+            if x % 2 == 0:
+                print(" . \t", end='')
+            else:
+                print("  \t", end='')
+            dotDash += 1
+        else:
+            BOARD_POSITION[x].append(dotDash)
+            print(y, "\t", end='')
+            dotDash += 1
+        NewLineOffSet += 1
+    print("\n")
 
