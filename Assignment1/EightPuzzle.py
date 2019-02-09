@@ -557,10 +557,10 @@ def IterativeDeepening(startNode):
     start = time.time()
     nodesPopped = 0
     currentDepth = 0
-    maxDepth = 1  #  sets the max dep search is allowed to search. dfs with depth limit
+    maxDepth = 1  #  sets the max dep that search is allowed to search. dfs with depth limit
     s = Stack()
     NodeList = Graph()
-    while currentDepth < 1000:
+    while currentDepth < 1000: # nested while loop.
         maxDepth = maxDepth + 1
         NodeList.emptyGraph()
         s.emptyStack()
@@ -575,7 +575,7 @@ def IterativeDeepening(startNode):
             print("Key:", node.getKey(), " :  Nodes Popped:", nodesPopped,  " :  State:", node.getState(), ":  Depth:", node.getDepth(), ":  Stack Size:", s.size())
             NodeList.add(node.getKey(), node)
 
-            # found goal node
+            #  checks if goal node
             if node.getState() == GOAL:
                 print("you have solved the puzzle")
 
