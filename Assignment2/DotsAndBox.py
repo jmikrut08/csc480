@@ -332,6 +332,70 @@ def getCoordinates(edgeKey):
                     print(coordinates)
                     return coordinates
 
+
+###################################################################
+#------------------ MINIMAX STUFF STARTS HERE -------------------#
+###################################################################
+
+class state:
+    key = 0
+    state = []
+    parentKey = 0
+    parentState = []
+    move = 0
+    points = 0
+    alpha = 0
+    beta = 0
+    depth = 0
+
+    def __init__(self, key, state, parentKey, parentState, move, points, depth):
+        self.key = key
+        self.state = state
+        self.parentKey = parentKey
+        self.parentState = parentState
+        self.move = move
+        self.move = points
+        self.depth = depth
+
+    def getKey(self):
+        return self.key
+
+    def getState(self):
+        return self.state
+
+    def getParentKey(self):
+        return self.parentKey
+
+    def getParentState(self):
+        return self.parentState
+
+    def getMove(self):
+        return self.move
+
+    def getPoints(self):
+        return self.points
+
+    def getDepth(self):
+        return self.depth
+
+    def setAlpha(self, points):
+        self.alpha = points
+
+    def setBeta(self, points):
+        self.beta = points
+
+    def setMove(self, edgeKey):
+        self.move = edgeKey
+
+    def createChildBoard(self):
+        global GAME_BOARD
+        child = GAME_BOARD.copy()
+        return child
+
+
+
+
+
 #BoardSize = input("What Size Board Do You Want To Use?\n")
 BoardSize = "5"
 size = int(BoardSize)
