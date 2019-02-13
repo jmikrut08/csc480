@@ -21,6 +21,7 @@ BOX_KEY_COUNTER = 1
 PLAYER_ONE = 1 # red
 PLAYER_TWO = 2 # blue
 CURRENT_PLAYER = 1
+CHILDREN = [] # stores child nodes in terminal group
 
 
 
@@ -337,25 +338,31 @@ def getCoordinates(edgeKey):
 #------------------ MINIMAX STUFF STARTS HERE -------------------#
 ###################################################################
 
-class state:
+class Child:
     key = 0
+    type = "" # max or min node
     state = []
     parentKey = 0
     parentState = []
+    childKeys = []
+    childStates = []
     move = 0
     points = 0
     alpha = 0
     beta = 0
     depth = 0
+    totalPoints = 0
 
-    def __init__(self, key, state, parentKey, parentState, move, points, depth):
+    def __init__(self, key, state, type, parentKey, parentState, move, points, depth):
         self.key = key
         self.state = state
+        self.type = type
         self.parentKey = parentKey
         self.parentState = parentState
         self.move = move
-        self.move = points
+        self.points = points
         self.depth = depth
+
 
     def getKey(self):
         return self.key
@@ -375,6 +382,9 @@ class state:
     def getPoints(self):
         return self.points
 
+    def getTotalPoints(self):
+        return self.totalPoints
+
     def getDepth(self):
         return self.depth
 
@@ -387,10 +397,16 @@ class state:
     def setMove(self, edgeKey):
         self.move = edgeKey
 
+    def setTotalPoints(self, points):
+        self.totalPoints += points
+
     def createChildBoard(self):
         global GAME_BOARD
         child = GAME_BOARD.copy()
         return child
+
+
+
 
 
 
