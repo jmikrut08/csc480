@@ -17,6 +17,7 @@ COMP_SCORE = 0
 CHOSEN_DEPTH = 0
 # EDGE_KEY_COUNTER = 1
 BOX_KEY_COUNTER = 1
+CHILD_KEY_COUNTER = 1
 # NAME_LETTERS = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
 PLAYER_ONE = 1 # red
 PLAYER_TWO = 2 # blue
@@ -388,6 +389,12 @@ class Child:
     def getDepth(self):
         return self.depth
 
+    def getType(self):
+        return self.type
+
+    def getChildren(self):
+        return self.childStates
+
     def setAlpha(self, points):
         self.alpha = points
 
@@ -400,6 +407,9 @@ class Child:
     def setTotalPoints(self, points):
         self.totalPoints += points
 
+    def addChildNode(self, childNode):
+        self.childStates.apppend(childNode)
+
     def createChildBoard(self):
         global GAME_BOARD
         child = GAME_BOARD.copy()
@@ -407,9 +417,60 @@ class Child:
 
 
 
+def minimax(node, movesLeft, depth,): # create first child outside of minimax algo, before calling it.
+    if depth == 0 or len(movesLeft) == 0: # add terminal nodes here too
+        return node.getTotalPoints()
+    #checks if nodes are max nodes
+    if node.getType() == "MAX":
+        # make children
+
+        value = -999999
+
+
+def max(gameBoard, movesLeft, depth):
+    if depth == 0 or len(movesLeft) == 0: # add terminal nodes here too
+        return gameBoard.getTotalPoints()
 
 
 
+def min(gameBoard, movesLeft, depth):
+    pass
+
+#RESET CHILD KEY COUNTER BEFORE MINI MAX TO 0
+# TOP NODE = Child(CHILD_KEY_COUNTER, GAME_BOARD, "MAX", 0, 0, 0, 0, CHOSEN_DEPTH)
+def generateChildren(parentNode, movesleft):
+    # def __init__(self, key, state, type, parentKey, parentState, move, points, depth):
+    global CHILD_KEY_COUNTER
+    listOfChildren = []
+    if parentNode.getType() == "MAX":
+        for element in movesleft:
+            nodeState = parentNode.getState.copy()
+
+            addMove(element)
+
+
+
+def addChildMove(key, node, movesleft):
+    global GAME_BOARD
+
+    global MOVES_LEFT
+    for row in node.getState():
+        for col in row:
+            if col == key:
+                if key in movesleft:
+                    rowIndex = node.getState.index(row)
+                    colIndex = row.index(col)
+
+                    # add key/edge to gameboard and return node. 
+
+                    # edge = Edge(key, rowIndex, colIndex, getPlayer())
+                    # global EDGES
+                    # EDGES.append(edge)
+                   # MOVES_LEFT.remove(key)
+                    # global MOVE_TABLE
+                    # MOVE_TABLE[rowIndex][colIndex] = getPlayer()
+                    # changePlayer()
+                    return node
 
 
 #BoardSize = input("What Size Board Do You Want To Use?\n")
