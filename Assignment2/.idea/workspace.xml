@@ -10,13 +10,16 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FavoritesManager">
+    <favorites_list name="Assignment2" />
+  </component>
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/DotsAndBox.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="545">
-              <caret line="463" column="65" selection-start-line="463" selection-start-column="65" selection-end-line="463" selection-end-column="65" />
+            <state relative-caret-position="752">
+              <caret line="541" column="10" selection-start-line="541" selection-start-column="10" selection-end-line="541" selection-end-column="10" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
               </folding>
@@ -44,10 +47,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="81" />
-    <option name="y" value="214" />
-    <option name="width" value="1969" />
-    <option name="height" value="1296" />
+    <option name="x" value="49" />
+    <option name="y" value="23" />
+    <option name="width" value="2712" />
+    <option name="height" value="1543" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -123,20 +126,20 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="81" y="214" width="1969" height="1296" extended-state="0" />
+    <frame x="49" y="23" width="2712" height="1543" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Favorites" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24332649" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Version Control" />
-      <window_info anchor="bottom" id="Python Console" weight="0.32947233" />
-      <window_info anchor="bottom" id="Terminal" />
+      <window_info id="Favorites" sideWeight="0.50034845" side_tool="true" visible="true" weight="0.1761427" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49965158" visible="true" weight="0.1761427" />
+      <window_info id="Structure" order="1" sideWeight="0.5005574" side_tool="true" weight="0.1761427" />
+      <window_info anchor="bottom" id="Version Control" weight="0.32961673" />
+      <window_info anchor="bottom" id="Python Console" weight="0.32891986" />
+      <window_info anchor="bottom" id="Terminal" weight="0.32961673" />
       <window_info anchor="bottom" id="Event Log" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.28893906" />
-      <window_info anchor="bottom" id="Debug" order="3" visible="true" weight="0.29713804" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.28850174" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3749129" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -146,15 +149,11 @@
     </layout>
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/DotsAndBox.py</url>
-          <line>515</line>
-          <option name="timeStamp" value="63" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="maxValueNode" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="watch">
@@ -180,8 +179,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/DotsAndBox.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="545">
-          <caret line="463" column="65" selection-start-line="463" selection-start-column="65" selection-end-line="463" selection-end-column="65" />
+        <state relative-caret-position="752">
+          <caret line="541" column="10" selection-start-line="541" selection-start-column="10" selection-end-line="541" selection-end-column="10" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
           </folding>
