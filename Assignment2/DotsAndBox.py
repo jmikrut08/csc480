@@ -1,11 +1,11 @@
 from colorama import Fore
-import random
-import copy
+import random, copy, threading
+lock = threading.Lock()
 
 # random score generator and array
 
 
-
+NODE_LIST = []
 BOX_SCORES = [] # multidimensional array that keeps score of each square generated
 GAME_BOARD = [] # Multidimensional array that stores edges
 MOVE_TABLE = [] # multidimensional table of moves done.
@@ -15,7 +15,7 @@ MOVES_LEFT = [] # range of numbers of edges left in game board
 FULL_SQUARES = [] # list of completed squares
 USER_SCORE = 0
 COMP_SCORE = 0
-CHOSEN_DEPTH = 4
+CHOSEN_DEPTH = 3
 # EDGE_KEY_COUNTER = 1
 BOX_KEY_COUNTER = 1
 CHILD_KEY_COUNTER = 1
@@ -25,8 +25,7 @@ PLAYER_ONE = 1 # red
 PLAYER_TWO = 2 # blue ALWAYS COMPUTER
 CURRENT_PLAYER = 1
 CHILDREN = [] # stores child nodes in terminal group
-
-
+PLAYED_MOVES = []
 
 class Coordinate:
     verticalIndex = 0
@@ -82,7 +81,7 @@ def getPlayer():
 def addMove(key):
     global GAME_BOARD
     global MOVES_LEFT
-    print(MOVES_LEFT)
+    #print(MOVES_LEFT)
     for row in GAME_BOARD:
         for col in row:
             if col == key:
@@ -93,7 +92,7 @@ def addMove(key):
                     global EDGES
                     EDGES.append(edge)
                     MOVES_LEFT.remove(key)
-                    print(MOVES_LEFT)
+                    #print(MOVES_LEFT)
                     global MOVE_TABLE
                     MOVE_TABLE[rowIndex][colIndex] = getPlayer()
                     changePlayer()
@@ -144,6 +143,8 @@ def createBoardIndex(size):
         print("\n")
 
 def createBoard(size):
+    global lock
+    lock.acquire(True)
     dotDash = 1
     NewLineOffSet = 1
     global GAME_BOARD
@@ -175,34 +176,43 @@ def createBoard(size):
         print("\n")
     global MOVES_LEFT
     MOVES_LEFT = list(range(1, int(GAME_BOARD[-1][-2]) + 1))
+    lock.release()
+
 
 def printGameBoard():
+    global lock
+    lock.acquire(True)
     global GAME_BOARD
-    global MOVES_LEFT
+    global MOVE_TABLE
     dot = "+"
     vertDash = "|"
     horDash = "--"
+    xIndex = 0
     for x in GAME_BOARD:
+        index = 0
         for y in x:
             if y == 0: # prints dots
-                print(Fore.RESET, '{:^5s}'.format(dot), end="")
+                print('{:^5s}'.format(dot), end="")
                 continue
             if GAME_BOARD.index(x) % 2 != 0:
-                if x.index(y) % 2 != 0:
-                    print(Fore.CYAN, '{:^5d}'.format(y), end="") # prints box points
+                if index % 2 != 0:
+                    print('{:^5d}'.format(y), end="") # prints box points
                 else: # prints vertical edges
                     # global MOVES_LEFT
                     if y in MOVES_LEFT:
-                        print(Fore.RESET, '{:^5d}'.format(y), end="") # prints unplayed vertical edges
+                        print('{:^5d}'.format(y), end="") # prints unplayed vertical edges
                     else:
-                        print(Fore.BLUE, '{:^5s}'.format(vertDash), end="") # prints played vertical edges
+                        print('{:^5s}'.format(vertDash), end="") # prints played vertical edges
             else: # prints horizontal edges
                 #global MOVES_LEFT
                 if y in MOVES_LEFT:
-                    print(Fore.RESET, '{:^5d}'.format(y), end="") # prints unplayed horizontal edges
+                    print('{:^5d}'.format(y), end="") # prints unplayed horizontal edges
                 else:
-                    print(Fore.BLUE, '{:^5s}'.format(horDash), end="")  # prints played vertical edges
+                    print('{:^5s}'.format(horDash), end="")  # prints played vertical edges
+            index += 1
+        xIndex += 1
         print("\n")
+    lock.release()
 
 def numberOfSides(edgeKey, moveTable):
     global GAME_BOARD
@@ -345,8 +355,11 @@ def getCoordinates(edgeKey):
                 else:
                     coordinates.append(row)
                     coordinates.append(col)
-                    #print(coordinates)
+                    # print(coordinates)
                     return coordinates
+    # print(coordinates)
+    return coordinates
+
 
 
 ###################################################################
@@ -356,7 +369,6 @@ def getCoordinates(edgeKey):
 class Child:
     key = 0
     type = "" # max or min node
-    #state = []
     movesLeft = []
     movesTable = []
     parentKey = 0
@@ -470,56 +482,59 @@ def generateChildren(parentNode):
         #childNodeState = parentNode.getState().copy()  # creates copy of the state of the board
         childMoveTable = copy.deepcopy(parentNode.getMovesTable())  # creates grid of moves
         coordinates = getCoordinates(move)  # returns location of edge on game board
-        print(coordinates[0])
-        if childMoveTable[coordinates[0]][coordinates[1]] == 0:  # if edge not has been played before
-            points = numberOfSides(move, parentNode.getMovesTable())  # checks if this move results in any points
-            childMovesLeft = copy.deepcopy(parentNode.getMovesLeft())  # copies list of moves left (avoids points squares and zero values for dots
-            childMovesLeft.remove(move)  # removes move from moves left before creation of child node
-            # scoring happens in nodes
-            if parentNode.getType() == "MAX":  # if this is a max node, make min nodes
-                # childMoveTable[coordinates[0]][coordinates[1]] = 2
-                # key, movesLeft, movesTable, type, parentKey, move, coordinates, points, totalPoints, depth):
-                child = Child(CHILD_KEY_COUNTER, childMovesLeft, childMoveTable, "MIN", parentNode.getKey(), move, coordinates, points, (parentNode.getTotalPoints() + points), (copy.deepcopy(parentNode.getDepth())+1))
-                listOfChildren.append(child)
-            if parentNode.getType() == "MIN": # if this is a min node, make max nodes
-                # childMoveTable[coordinates[0]][coordinates[1]] = 1
-                # key, movesLeft, movesTable, type, parentKey, move, coordinates, points, totalPoints, depth):
-                child = Child(CHILD_KEY_COUNTER, childMovesLeft, childMoveTable, "MAX", parentNode.getKey(), move, coordinates, points, (parentNode.getTotalPoints() - points), (copy.deepcopy(parentNode.getDepth())+1))
-                listOfChildren.append(child)
-            CHILD_KEY_COUNTER += 1
+        if len(coordinates) > 0:
+            if childMoveTable[coordinates[0]][coordinates[1]] == 0:  # if edge not has been played before
+                points = numberOfSides(move, parentNode.getMovesTable())  # checks if this move results in any points
+                childMovesLeft = copy.deepcopy(parentNode.getMovesLeft())  # copies list of moves left (avoids points squares and zero values for dots
+                childMovesLeft.remove(move)  # removes move from moves left before creation of child node
+                # scoring happens in nodes
+                if parentNode.getType() == "MAX":  # if this is a max node, make min nodes
+                    childMoveTable[coordinates[0]][coordinates[1]] = 2
+                    # key, movesLeft, movesTable, type, parentKey, move, coordinates, points, totalPoints, depth):
+                    child = Child(CHILD_KEY_COUNTER, childMovesLeft, childMoveTable, "MIN", copy.deepcopy(parentNode.getKey()), move, coordinates, points, (copy.deepcopy(parentNode.getTotalPoints()) + points), (copy.deepcopy(parentNode.getDepth()) + 1))
+                    listOfChildren.append(child)
+                if parentNode.getType() == "MIN":  # if this is a min node, make max nodes
+                    childMoveTable[coordinates[0]][coordinates[1]] = 1
+                    # key, movesLeft, movesTable, type, parentKey, move, coordinates, points, totalPoints, depth):
+                    child = Child(CHILD_KEY_COUNTER, childMovesLeft, childMoveTable, "MAX", parentNode.getKey(), move, coordinates, points, (copy.deepcopy(parentNode.getTotalPoints()) - points), (copy.deepcopy(parentNode.getDepth()) + 1))
+                    listOfChildren.append(child)
+                CHILD_KEY_COUNTER += 1
     return listOfChildren
 
 # parentNode = (CHILD_KEY_COUNTER(0), , childMoveTable, "MIN", parentNode.getKey(), move, coordinates, points, (parentNode.getTotalPoints() + points), (parentNode.getDepth()+1))
 def minimax(node):
-    print(node.getMove(), node.getTotalPoints(), node.getDepth())
-    if node.getDepth == (2 * CHOSEN_DEPTH) or (len(node.getMovesLeft()) == 0):
-        print("fuckthisshitisawesome")
-        return node
-    # print(node.getKey())
+    print("            Key:", node.getKey(), " Type:", node.getType(), " Move:", node.getMove(), " Depth:", node.getDepth(), " Points:", node.getPoints(), " Total Points:", node.getTotalPoints(), " Moves Left:", node.getMovesLeft())
+    global CHOSEN_DEPTH
+    global NODE_LIST
+    if node.getDepth() == ((2 * CHOSEN_DEPTH) - 1) or len(node.getMovesLeft()) == 0:
+        print(" -------------- got to depth ----------------")
+        return node.getTotalPoints()
     if node.getType() == "MAX":
-        maxValueNode = node
         listofChildren = generateChildren(node)
+        maxValue = -999999
         for child in listofChildren:
             valueNode = minimax(child)
-            # maxValueNode = max(maxValueNode.getTotalPoints(), valueNode.getTotalPoints())
-            print(maxValueNode.getTotalPoints(), valueNode.getTotalPoints())
-            if valueNode.getTotalPoints() > maxValueNode.getTotalPoints():
-                return valueNode
-            else:
-                return maxValueNode
+            if valueNode > maxValue:
+                maxValue = valueNode
+                lock.acquire(True)
+                NODE_LIST.append(child)
+                lock.release()
+        return maxValue
     if node.getType() == "MIN":
-        minValueNode = node
         listofChildren = generateChildren(node)
+        minValue = +999999
         for child in listofChildren:
             valueNode = minimax(child)
-            if valueNode.getTotalPoints() > minValueNode.getTotalPoints():
-                return valueNode
-            else:
-                return minValueNode
+            if valueNode < minValue:
+                minValue = valueNode
+                lock.acquire(True)
+                NODE_LIST.append(child)
+                lock.release()
+        return minValue
 
 
 #BoardSize = input("What Size Board Do You Want To Use?\n")
-BoardSize = "2"
+BoardSize = "3"
 size = int(BoardSize)
 #BOARD = []
 # createBoardIndex(size)
@@ -529,24 +544,84 @@ print("\n\n")
 for x in GAME_BOARD:
     print(x)
 
+print("\n\n")
 #key, movesLeft, movesTable, type, parentKey, move, coordinates, points, totalPoints, depth):
 
 node = Child(0, MOVES_LEFT, MOVE_TABLE, "MAX", 0, 0, [], 0, 0, 0)
-x = 5
-while x > 0:
-    print(node.getKey(), node.getMove(), node.getDepth(), node.getType())
-    node = minimax(node)
-    print(node.getMove())
-    addMove(node.getMove())
-    #printGameBoard()
-    x -= 1
+nodes = generateChildren(node)
+for x in nodes:
+    print("Key:", x.getKey(), " Type:", x.getType(), " Move:", x.getMove(), " Depth:", x.getDepth(), " Points:", x.getPoints(), " Total Points:", x.getTotalPoints(), " Moves Left:", x.getMovesLeft())
 
-#print(MOVES_LEFT)
-#print(isMoveAvailable(60))
-# for x in COORDINATES:
-#     print("[{}][{}]".format(x.getVertIndex(), x.getHorIndex()))
 
-printGameBoard()
+print("\n\n")
+addMove(1)
+print(MOVES_LEFT)
+
+print(MOVES_LEFT)
+addMove(3)
+print(MOVES_LEFT)
+addMove(5)
+addMove(6)
+addMove(7)
+
+addMove(11)
+addMove(19)
+addMove(23)
+addMove(18)
+addMove(22)
+addMove(12)
+addMove(10)
+
+PLAYED_MOVES = [1, 3, 5, 6, 7, 11, 19, 23, 18, 22, 12, 10]
+
+while (len(MOVES_LEFT) > 0):
+    NODE_LIST.clear()
+    CHILD_KEY_COUNTER = 1
+    print("\n\n")
+    printGameBoard()
+    print("\n\n")
+    print(PLAYED_MOVES)
+    print("\n\n")
+    userInput = int(input("what move do you want to play?"))
+    addMove(userInput)
+    PLAYED_MOVES.append(userInput)
+    if (len(MOVES_LEFT) == 0):
+        break
+    else:
+        node = Child(0, MOVES_LEFT, MOVE_TABLE, "MAX", 0, 0, [], 0, 0, 0)
+        minimax(node)
+        print(NODE_LIST[-1].getMove())
+        addMove(NODE_LIST[-1].getMove())
+        PLAYED_MOVES.append(NODE_LIST[-1].getMove())
+
+
+
+
+#
+#
+# print(MOVES_LEFT)
+#
+# print("\n")
+# printGameBoard()
+# print("\n")
+#
+# CHILD_KEY_COUNTER = 1
+# node2 = Child(0, MOVES_LEFT, MOVE_TABLE, "MAX", 0, 0, [], 0, 0, 0)
+#
+# print("\n\n")
+# noood = minimax(node2)
+#
+# print(NODE_LIST[-1].getMove(), NODE_LIST[-1].getTotalPoints(), )
+#
+#
+# # print(noood.getMove(), noood. getTotalPoints())
+# #print(noood.getMove())
+# #print(isMoveAvailable(60))
+# # for x in COORDINATES:
+# #     print("[{}][{}]".format(x.getVertIndex(), x.getHorIndex()))
+# print("\n\n")
+#
+# printGameBoard()
 
 #addMove(45)
 #addMove(56)
@@ -561,3 +636,7 @@ printGameBoard()
 
 #print(MOVES_LEFT)
 
+# for child in listofChildren:
+#     print("CHILDREN OF - ", child.getParentKey(), "- Key:", child.getKey(), " Type:", child.getType(), " Move:", child.getMove(), " Depth:", child.getDepth(),
+#           " Points:", child.getPoints(), " Total Points:", child.getTotalPoints(), " Moves Left:",
+#           child.getMovesLeft())
