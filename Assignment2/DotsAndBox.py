@@ -477,12 +477,12 @@ def generateChildren(parentNode):
             childMovesLeft.remove(move)  # removes move from moves left before creation of child node
             # scoring happens in nodes
             if parentNode.getType() == "MAX":  # if this is a max node, make min nodes
-                childMoveTable[coordinates[0]][coordinates[1]] = 2
+                # childMoveTable[coordinates[0]][coordinates[1]] = 2
                 # key, movesLeft, movesTable, type, parentKey, move, coordinates, points, totalPoints, depth):
                 child = Child(CHILD_KEY_COUNTER, childMovesLeft, childMoveTable, "MIN", parentNode.getKey(), move, coordinates, points, (parentNode.getTotalPoints() + points), (copy.deepcopy(parentNode.getDepth())+1))
                 listOfChildren.append(child)
             if parentNode.getType() == "MIN": # if this is a min node, make max nodes
-                childMoveTable[coordinates[0]][coordinates[1]] = 1
+                # childMoveTable[coordinates[0]][coordinates[1]] = 1
                 # key, movesLeft, movesTable, type, parentKey, move, coordinates, points, totalPoints, depth):
                 child = Child(CHILD_KEY_COUNTER, childMovesLeft, childMoveTable, "MAX", parentNode.getKey(), move, coordinates, points, (parentNode.getTotalPoints() - points), (copy.deepcopy(parentNode.getDepth())+1))
                 listOfChildren.append(child)
