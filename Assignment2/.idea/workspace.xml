@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cb11f0e1-4a43-4ca6-baf5-c94301557f58" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DotsAndBox.py" beforeDir="false" afterPath="$PROJECT_DIR$/DotsAndBox.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -19,8 +18,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/DotsAndBox.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="415">
-              <caret line="574" column="57" selection-start-line="574" selection-start-column="57" selection-end-line="574" selection-end-column="57" />
+            <state relative-caret-position="488">
+              <caret line="606" lean-forward="true" selection-start-line="606" selection-end-line="606" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
               </folding>
@@ -128,6 +127,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="29" y="23" width="2712" height="1543" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49965158" visible="true" weight="0.1761427" />
       <window_info id="Structure" order="1" sideWeight="0.5005574" side_tool="true" weight="0.1761427" />
@@ -179,8 +179,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/DotsAndBox.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="415">
-          <caret line="574" column="57" selection-start-line="574" selection-start-column="57" selection-end-line="574" selection-end-column="57" />
+        <state relative-caret-position="488">
+          <caret line="606" lean-forward="true" selection-start-line="606" selection-end-line="606" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
           </folding>

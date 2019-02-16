@@ -502,7 +502,7 @@ def generateChildren(parentNode):
     return listOfChildren
 
 # parentNode = (CHILD_KEY_COUNTER(0), , childMoveTable, "MIN", parentNode.getKey(), move, coordinates, points, (parentNode.getTotalPoints() + points), (parentNode.getDepth()+1))
-def minimax(node):
+def minimax(node, alpha, beta):
     print("            Key:", node.getKey(), " Type:", node.getType(), " Move:", node.getMove(), " Depth:", node.getDepth(), " Points:", node.getPoints(), " Total Points:", node.getTotalPoints(), " Moves Left:", node.getMovesLeft())
     global CHOSEN_DEPTH
     global NODE_LIST
@@ -513,23 +513,31 @@ def minimax(node):
         listofChildren = generateChildren(node)
         maxValue = -999999
         for child in listofChildren:
-            valueNode = minimax(child)
+            valueNode = minimax(child, alpha, beta)
             if valueNode > maxValue:
                 maxValue = valueNode
                 lock.acquire(True)
                 NODE_LIST.append(child)
                 lock.release()
+            if valueNode > alpha:
+                alpha = valueNode
+                if beta <= alpha:
+                    break
         return maxValue
     if node.getType() == "MIN":
         listofChildren = generateChildren(node)
-        minValue = +999999
+        minValue = 999999
         for child in listofChildren:
-            valueNode = minimax(child)
+            valueNode = minimax(child, alpha, beta)
             if valueNode < minValue:
                 minValue = valueNode
                 lock.acquire(True)
                 NODE_LIST.append(child)
                 lock.release()
+            if valueNode < beta:
+                beta = valueNode
+                if beta <= alpha:
+                    break
         return minValue
 
 
@@ -586,57 +594,13 @@ while (len(MOVES_LEFT) > 0):
     addMove(userInput)
     PLAYED_MOVES.append(userInput)
     if (len(MOVES_LEFT) == 0):
+        printGameBoard()
         break
     else:
         node = Child(0, MOVES_LEFT, MOVE_TABLE, "MAX", 0, 0, [], 0, 0, 0)
-        minimax(node)
+        minimax(node, -999999, 999999)
         print(NODE_LIST[-1].getMove())
         addMove(NODE_LIST[-1].getMove())
         PLAYED_MOVES.append(NODE_LIST[-1].getMove())
 
 
-
-
-#
-#
-# print(MOVES_LEFT)
-#
-# print("\n")
-# printGameBoard()
-# print("\n")
-#
-# CHILD_KEY_COUNTER = 1
-# node2 = Child(0, MOVES_LEFT, MOVE_TABLE, "MAX", 0, 0, [], 0, 0, 0)
-#
-# print("\n\n")
-# noood = minimax(node2)
-#
-# print(NODE_LIST[-1].getMove(), NODE_LIST[-1].getTotalPoints(), )
-#
-#
-# # print(noood.getMove(), noood. getTotalPoints())
-# #print(noood.getMove())
-# #print(isMoveAvailable(60))
-# # for x in COORDINATES:
-# #     print("[{}][{}]".format(x.getVertIndex(), x.getHorIndex()))
-# print("\n\n")
-#
-# printGameBoard()
-
-#addMove(45)
-#addMove(56)
-#addMove(51)
-#numberOfSides(50, MOVE_TABLE)
-#addMove(50)
-#numberOfSides(14)
-
-#print("\n\n\n")
-
-#printGameBoard()
-
-#print(MOVES_LEFT)
-
-# for child in listofChildren:
-#     print("CHILDREN OF - ", child.getParentKey(), "- Key:", child.getKey(), " Type:", child.getType(), " Move:", child.getMove(), " Depth:", child.getDepth(),
-#           " Points:", child.getPoints(), " Total Points:", child.getTotalPoints(), " Moves Left:",
-#           child.getMovesLeft())
