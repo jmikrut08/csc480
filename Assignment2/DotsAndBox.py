@@ -508,99 +508,102 @@ def minimax(node, alpha, beta):
     global NODE_LIST
     if node.getDepth() == ((2 * CHOSEN_DEPTH) - 1) or len(node.getMovesLeft()) == 0:
         print(" -------------- got to depth ----------------")
-        return node.getTotalPoints()
+        return [node.getMove(), node.getTotalPoints()]
     if node.getType() == "MAX":
         listofChildren = generateChildren(node)
         maxValue = -999999
+        maxMove = 0
         for child in listofChildren:
             valueNode = minimax(child, alpha, beta)
-            if valueNode > maxValue:
-                maxValue = valueNode
-                lock.acquire(True)
-                NODE_LIST.append(child)
-                lock.release()
-            if valueNode > alpha:
-                alpha = valueNode
-                if beta <= alpha:
-                    break
-        return maxValue
+            if valueNode[1] > maxValue:
+                maxMove = child.getMove()
+                maxValue = valueNode[1]
+                node.setTotalPoints(child.getTotalPoints())
+            alpha = max(alpha, valueNode[1])
+            if alpha >= beta:
+                break
+        return [maxMove, maxValue]
     if node.getType() == "MIN":
         listofChildren = generateChildren(node)
         minValue = 999999
+        minMove = 0
         for child in listofChildren:
             valueNode = minimax(child, alpha, beta)
-            if valueNode < minValue:
-                minValue = valueNode
-                lock.acquire(True)
-                NODE_LIST.append(child)
-                lock.release()
-            if valueNode < beta:
-                beta = valueNode
-                if beta <= alpha:
-                    break
-        return minValue
+            if valueNode[1] < minValue:
+                maxMove = child.getMove()
+                minValue = valueNode[1]
+                node.setTotalPoints(child.getTotalPoints())
+            beta = min(beta, valueNode[1])
+            if alpha >= beta:
+                break
+        return [minMove, minValue]
 
 
-#BoardSize = input("What Size Board Do You Want To Use?\n")
-BoardSize = "3"
+
+
+###################################################################
+#------------------ USER INTERFACE STUFF STARTS HERE -------------------#
+###################################################################
+
+print("Welcome to Assignment 2!\n")
+
+
+BoardSize = input("What Size Board Do You Want To Use?\n")
 size = int(BoardSize)
-#BOARD = []
-# createBoardIndex(size)
-#print("\n\n\n")
+print("\n\nGENERATED GAMEBOARD:")
+print("-" * size * 15)
 createBoard(size)
-print("\n\n")
-for x in GAME_BOARD:
-    print(x)
-
-print("\n\n")
-#key, movesLeft, movesTable, type, parentKey, move, coordinates, points, totalPoints, depth):
-
-node = Child(0, MOVES_LEFT, MOVE_TABLE, "MAX", 0, 0, [], 0, 0, 0)
-nodes = generateChildren(node)
-for x in nodes:
-    print("Key:", x.getKey(), " Type:", x.getType(), " Move:", x.getMove(), " Depth:", x.getDepth(), " Points:", x.getPoints(), " Total Points:", x.getTotalPoints(), " Moves Left:", x.getMovesLeft())
+print("\n")
+chosenDepth = input("How many plys do you wish the computer to calculate?\n")
+CHOSEN_DEPTH = int(chosenDepth)
+print("\n")
 
 
-print("\n\n")
-addMove(1)
-print(MOVES_LEFT)
 
-print(MOVES_LEFT)
-addMove(3)
-print(MOVES_LEFT)
-addMove(5)
-addMove(6)
-addMove(7)
-
-addMove(11)
-addMove(19)
-addMove(23)
-addMove(18)
-addMove(22)
-addMove(12)
-addMove(10)
-
-PLAYED_MOVES = [1, 3, 5, 6, 7, 11, 19, 23, 18, 22, 12, 10]
+# PLAYED_MOVES = [1, 3, 5, 6, 7, 11, 19, 23, 18, 22, 12, 10]
 
 while (len(MOVES_LEFT) > 0):
     NODE_LIST.clear()
     CHILD_KEY_COUNTER = 1
     print("\n\n")
     printGameBoard()
-    print("\n\n")
-    print(PLAYED_MOVES)
-    print("\n\n")
-    userInput = int(input("what move do you want to play?"))
+    print("-" * size * 15)
+    print("PLAYER SCORE: ", USER_SCORE, "\nCOMPUTER SCORE: ", COMP_SCORE)
+    print("")
+    print("MOVES PLAYED - ", PLAYED_MOVES)
+    print("")
+    userInput = 0
+    while True:
+        userInput = int(input("What move do you want to play?"))
+        if userInput in MOVES_LEFT:
+            break
+    userPoints = numberOfSides(userInput, MOVE_TABLE)
     addMove(userInput)
+    USER_SCORE += userPoints
     PLAYED_MOVES.append(userInput)
     if (len(MOVES_LEFT) == 0):
         printGameBoard()
         break
     else:
         node = Child(0, MOVES_LEFT, MOVE_TABLE, "MAX", 0, 0, [], 0, 0, 0)
-        minimax(node, -999999, 999999)
-        print(NODE_LIST[-1].getMove())
-        addMove(NODE_LIST[-1].getMove())
-        PLAYED_MOVES.append(NODE_LIST[-1].getMove())
-
+        results = minimax(node, -999999, 999999)
+        print(results[0], results[1])
+        if results[0] not in MOVES_LEFT:
+            results[0] = random.choice(MOVES_LEFT)
+        userPoints = numberOfSides(results[0], MOVE_TABLE)
+        addMove(results[0])
+        print(userPoints)
+        COMP_SCORE += userPoints
+        for x in MOVE_TABLE:
+            print(x)
+        PLAYED_MOVES.append(results[0])
+        print(NODE_LIST)
+    if len(MOVES_LEFT) == 0:
+        break
+if COMP_SCORE > USER_SCORE:
+    print("I'M SORRY YOU LOST TO THE COMPUTER!\n\nThe final score was")
+    print("PLAYER SCORE: ", USER_SCORE, "\nCOMPUTER SCORE: ", COMP_SCORE)
+else:
+    print("CONGRATS YOU BEAT THE COMPUTER!\n\nThe final score was")
+    print("PLAYER SCORE: ", USER_SCORE, "\nCOMPUTER SCORE: ", COMP_SCORE)
 
