@@ -1,4 +1,4 @@
-import random, copy, threading
+import random, copy, threading, time
 lock = threading.Lock()
 
 GAME_BOARD = [] # Multidimensional array that stores edges
@@ -131,9 +131,7 @@ def printGameBoard():
 # SCORE KEEPING. CHECKS IF MOVE COMPLETES A SQUARE AND THEN RETURNS THE POINTS SCORED.
 def numberOfSides(edgeKey, moveTable):
     global GAME_BOARD
-    # global MOVE_TABLE
     global BOX_KEY_COUNTER
-    global FULL_SQUARES
     points = 0
     boxBelow = []
     boxAbove = []
@@ -239,17 +237,26 @@ def numberOfSides(edgeKey, moveTable):
 def getCoordinates(edgeKey):
     global GAME_BOARD
     coordinates = []
+    xindex = 0
+    yindex = 0
     for x in GAME_BOARD:
+        yindex = 0
         for y in x:
             if y == edgeKey:
-                row = GAME_BOARD.index(x)
-                col = GAME_BOARD[row].index(y)
-                if row % 2 != 0 and col % 2 != 0:
-                    continue
-                else:
+                row = xindex
+                col = yindex
+                print(row, col)
+                if row % 2 != 0 and col % 2 == 0:
                     coordinates.append(row)
                     coordinates.append(col)
-                    return coordinates
+                    print("row odd", row, col)
+                if row % 2 == 0 and col % 2 != 0:
+                    coordinates.append(row)
+                    coordinates.append(col)
+                    print("even", row, col)
+            yindex += 1
+        xindex += 1
+    print("fuck", row, col)
     return coordinates
 
 ###################################################################
@@ -367,7 +374,7 @@ def minimax(node, alpha, beta):
         for child in listofChildren:
             valueNode = minimax(child, alpha, beta)
             if valueNode[1] < minValue:
-                maxMove = child.getMove()
+                minMove = child.getMove()
                 minValue = valueNode[1]
                 node.setTotalPoints(child.getTotalPoints())
             beta = min(beta, valueNode[1])
@@ -410,6 +417,7 @@ while (len(MOVES_LEFT) > 0):
         if userInput in MOVES_LEFT:
             break
     userPoints = numberOfSides(userInput, MOVE_TABLE)
+    print("\nYou played move number {}, and scored {} points\n".format(userInput, userPoints))
     addMove(userInput)
     USER_SCORE += userPoints
     PLAYED_MOVES.append(userInput)
@@ -419,11 +427,13 @@ while (len(MOVES_LEFT) > 0):
     else:
         print("Calculating Computer Move....\n")
         node = Child(0, MOVES_LEFT, MOVE_TABLE, "MAX", 0, 0, [], 0, 0, 0)
+        start = time.time()
         results = minimax(node, -999999, 999999)
         if results[0] not in MOVES_LEFT:
             results[0] = random.choice(MOVES_LEFT)
         pointsScored = numberOfSides(results[0], MOVE_TABLE)
-        print("\nThe Computer played nubmer {}, and scored {} points".format(results[0], pointsScored))
+        end = time.time()
+        print("\nThe Computer played move number {}, and scored {} points \n(Calculation took {} seconds)".format(results[0], pointsScored, end - start))
         addMove(results[0])
         COMP_SCORE += pointsScored
         PLAYED_MOVES.append(results[0])
