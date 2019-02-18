@@ -245,18 +245,14 @@ def getCoordinates(edgeKey):
             if y == edgeKey:
                 row = xindex
                 col = yindex
-                print(row, col)
                 if row % 2 != 0 and col % 2 == 0:
                     coordinates.append(row)
                     coordinates.append(col)
-                    print("row odd", row, col)
                 if row % 2 == 0 and col % 2 != 0:
                     coordinates.append(row)
                     coordinates.append(col)
-                    print("even", row, col)
             yindex += 1
         xindex += 1
-    print("fuck", row, col)
     return coordinates
 
 ###################################################################
@@ -356,6 +352,7 @@ def minimax(node, alpha, beta):
         listofChildren = generateChildren(node) # generates children board states
         maxValue = -999999 # set smallest possible value of node
         maxMove = 0 # initializes move key
+        # iterates through child states
         for child in listofChildren:
             valueNode = minimax(child, alpha, beta) # recursive for going down before comparing to rest of same depth nodes.
             if valueNode[1] > maxValue: # updates to highest value of children
