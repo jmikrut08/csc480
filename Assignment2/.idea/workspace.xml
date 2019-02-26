@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="cb11f0e1-4a43-4ca6-baf5-c94301557f58" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotsAndBox.py" beforeDir="false" afterPath="$PROJECT_DIR$/DotsAndBox.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,8 +18,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/DotsAndBox.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="356" column="63" selection-start-line="356" selection-start-column="63" selection-end-line="356" selection-end-column="63" />
+            <state relative-caret-position="-967">
+              <caret line="266" column="8" selection-start-line="266" selection-start-column="8" selection-end-line="266" selection-end-column="8" />
             </state>
           </provider>
         </entry>
@@ -125,14 +124,13 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="43" y="23" width="1877" height="1120" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49965158" visible="true" weight="0.12984914" />
       <window_info id="Structure" order="1" sideWeight="0.5005574" side_tool="true" weight="0.1761427" />
       <window_info id="Favorites" order="2" sideWeight="0.50034845" side_tool="true" weight="0.1761427" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.18181819" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.23221344" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3749129" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -177,8 +175,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/DotsAndBox.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="356" column="63" selection-start-line="356" selection-start-column="63" selection-end-line="356" selection-end-column="63" />
+        <state relative-caret-position="-967">
+          <caret line="266" column="8" selection-start-line="266" selection-start-column="8" selection-end-line="266" selection-end-column="8" />
         </state>
       </provider>
     </entry>
