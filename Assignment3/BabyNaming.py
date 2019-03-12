@@ -24,6 +24,24 @@ names = names.read().splitlines()
 # rCount = count_char(names, "r")
 # print(rCount)
 
+class Pair:
+    char = ""
+    count = 0
+
+    def __init__(self, charIn, countIn):
+        self.char = charIn
+        self.count = countIn
+
+    def getChar(self):
+        return self.char
+
+    def getCount(self):
+        return self.count
+
+    def addCount(self):
+        self.count += 1
+
+
 def generateDataset():
     file = open("namesBoys.txt", "r")
     names = file.read().splitlines()
