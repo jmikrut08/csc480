@@ -81,16 +81,11 @@ def generateDataset():
         name = "__" + name + "__"
         #print(name)
         index = 0
-        for letter in name:
-            if (characterInList(CHAR_LIST, letter.upper())) == False:
-                newCharacter = Character(letter.upper(), [])
+        for i in range(len(name)):
+            if (characterInList(CHAR_LIST, name[i].upper())) == False:
+                newCharacter = Character(name[i].upper(), [])
                 CHAR_LIST.append(newCharacter)
-            if index >= 3 and letter != "_":
 
-
-
-
-            index += 1
 
 
 
