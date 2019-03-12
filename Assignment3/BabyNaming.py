@@ -2,8 +2,8 @@
 #GLOBAL VARS
 CHAR_LIST = []
 
-names = open("namesBoys.txt", "r")
-names = names.read().splitlines()
+#names = open("namesBoys.txt", "r")
+#names = names.read().splitlines()
 #for x in names:
     #x = "__" + x + "__"
     #print(x)
@@ -24,6 +24,7 @@ names = names.read().splitlines()
 # rCount = count_char(names, "r")
 # print(rCount)
 
+
 class Pair:
     char = ""
     count = 0
@@ -41,14 +42,56 @@ class Pair:
     def addCount(self):
         self.count += 1
 
+class Character:
+    letter = ""
+    nextLetter = [] # list of pairs
+
+    def __init__(self, letterIn, nextLetterIn):
+        self.letter = letterIn
+        self.nextLetter = nextLetterIn
+
+    def getKey(self):
+        return self.letter
+
+    def getPairList(self):
+        return self.nextLetter
+
+    def addPair(pair): # only works if letter isn't in list yet
+        listEdited = 0
+        for x in nextLetter:
+            if x.getChar() == pair.getChar():
+                x.addCount()
+                listEdited = 1
+        if listEdited == 0:
+            self.nextLetter.append(pair)
+
+def characterInList(list,letter):
+    for x in list: # list of Characters
+        if x.getKey() == letter:
+            return True
+    return False
+
+def appendPair(list, pair):
+    pass
 
 def generateDataset():
     file = open("namesBoys.txt", "r")
     names = file.read().splitlines()
     for name in names:
+        name = "__" + name + "__"
+        #print(name)
+        index = 0
         for letter in name:
-            if letter.upper() not in CHAR_LIST:
-                CHAR_LIST.append(letter.upper())
+            if (characterInList(CHAR_LIST, letter.upper())) == False:
+                newCharacter = Character(letter.upper(), [])
+                CHAR_LIST.append(newCharacter)
+            if index >= 3 and letter != "_":
+
+
+
+
+            index += 1
+
 
 
 
@@ -56,4 +99,4 @@ def generateDataset():
 
 generateDataset()
 for x in CHAR_LIST:
-    print(x)
+    print(x.getKey(), x.getPairList())
