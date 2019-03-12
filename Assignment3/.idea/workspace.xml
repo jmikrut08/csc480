@@ -1,25 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cb11f0e1-4a43-4ca6-baf5-c94301557f58" name="Default Changelist" comment="" />
+    <list default="true" id="e0e9a34e-adaa-4620-a41b-4f8f2740c3d1" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BabyNaming.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Assignment2/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Assignment2/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FavoritesManager">
-    <favorites_list name="Assignment2" />
-  </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+    <leaf>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/DotsAndBox.py">
+        <entry file="file://$PROJECT_DIR$/BabyNaming.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="437">
-              <caret line="284" column="28" lean-forward="true" selection-start-line="284" selection-start-column="28" selection-end-line="284" selection-end-column="28" />
+            <state relative-caret-position="496">
+              <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/namesBoys.txt">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
@@ -37,13 +43,13 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/DotsAndBox.py" />
+        <option value="$PROJECT_DIR$/BabyNaming.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="43" />
-    <option name="y" value="23" />
+    <option name="x" value="-1889" />
+    <option name="y" value="386" />
     <option name="width" value="1877" />
     <option name="height" value="1120" />
   </component>
@@ -58,14 +64,17 @@
         <subPane>
           <expand>
             <path>
-              <item name="Assignment2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Assignment2" type="462c0819:PsiDirectoryNode" />
+              <item name="Assignment3" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Assignment3" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
     </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -80,8 +89,8 @@
     </option>
   </component>
   <component name="RunManager">
-    <configuration name="DotsAndBox" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="Assignment2" />
+    <configuration name="BabyNaming" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Assignment3" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -92,7 +101,7 @@
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/DotsAndBox.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/BabyNaming.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -103,7 +112,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.DotsAndBox" />
+        <item itemvalue="Python.BabyNaming" />
       </list>
     </recent_temporary>
   </component>
@@ -112,70 +121,45 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="cb11f0e1-4a43-4ca6-baf5-c94301557f58" name="Default Changelist" comment="" />
-      <created>1549743248500</created>
+      <changelist id="e0e9a34e-adaa-4620-a41b-4f8f2740c3d1" name="Default Changelist" comment="" />
+      <created>1552356180661</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1549743248500</updated>
+      <updated>1552356180661</updated>
     </task>
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="43" y="23" width="1877" height="1120" extended-state="0" />
+    <frame x="-1889" y="386" width="1877" height="1120" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49965158" visible="true" weight="0.12984914" />
-      <window_info id="Structure" order="1" sideWeight="0.5005574" side_tool="true" weight="0.1761427" />
-      <window_info id="Favorites" order="2" sideWeight="0.50034845" side_tool="true" weight="0.1761427" />
+      <window_info id="Favorites" side_tool="true" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Version Control" />
+      <window_info anchor="bottom" id="Python Console" />
+      <window_info anchor="bottom" id="Terminal" />
+      <window_info anchor="bottom" id="Event Log" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.23221344" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3749129" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32905138" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Version Control" order="7" weight="0.32961673" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32961673" />
-      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" id="Python Console" order="10" weight="0.32891986" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
   </component>
-  <component name="XDebuggerManager">
-    <watches-manager>
-      <configuration name="PythonConfigurationType">
-        <watch expression="maxValueNode" />
-      </configuration>
-    </watches-manager>
-  </component>
-  <component name="debuggerHistoryManager">
-    <expressions id="watch">
-      <expression>
-        <expression-string>FULL_SQUARES</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>edgeKey</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-    </expressions>
-  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
-          <caret line="1740" selection-start-line="1740" selection-end-line="1740" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/namesBoys.txt">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/DotsAndBox.py">
+    <entry file="file://$PROJECT_DIR$/BabyNaming.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="284" column="28" lean-forward="true" selection-start-line="284" selection-start-column="28" selection-end-line="284" selection-end-column="28" />
+        <state relative-caret-position="496">
+          <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
         </state>
       </provider>
     </entry>
