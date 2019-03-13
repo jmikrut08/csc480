@@ -1,90 +1,110 @@
+import random
 # file_object  = open(“filename”, “mode”) where file_object is the variable to add the file object.
 #GLOBAL VARS
 CHAR_LIST = []
-
-#names = open("namesBoys.txt", "r")
-#names = names.read().splitlines()
-#for x in names:
-    #x = "__" + x + "__"
-    #print(x)
-# for line in names:
-#     line = line.splitlines()
-# #    line = "__" + line + "__"
-#     print(line)
-
-
-# def count_char(list, char):
-#     totalcount = 0
-#     for name in names:
-#         for letter in name:
-#             if letter == char:
-#                 totalcount += 1
-#     return totalcount
-#
-# rCount = count_char(names, "r")
-# print(rCount)
-
-
-class Pair:
-    char = ""
-    count = 0
-
-    def __init__(self, charIn, countIn):
-        self.char = charIn
-        self.count = countIn
-
-    def getChar(self):
-        return self.char
-
-    def getCount(self):
-        return self.count
-
-    def addCount(self):
-        self.count += 1
+m = 2
+MIN_LENGTH = 5
+MAX_LENGTH = 10
+CURRENT_NAME = ""
 
 class Character:
-    letter = ""
-    nextLetter = [] # list of pairs
+    str = ""
+    nextStr = [] # list of pairs
 
-    def __init__(self, letterIn, nextLetterIn):
-        self.letter = letterIn
-        self.nextLetter = nextLetterIn
+    def __init__(self, strIn, nextStrIn):
+        self.str = strIn
+        self.nextStr = nextStrIn
 
     def getKey(self):
-        return self.letter
+        return self.str
 
-    def getPairList(self):
-        return self.nextLetter
+    def getNextStrList(self):
+        return self.nextStr
 
-    def addPair(pair): # only works if letter isn't in list yet
-        listEdited = 0
-        for x in nextLetter:
-            if x.getChar() == pair.getChar():
-                x.addCount()
-                listEdited = 1
-        if listEdited == 0:
-            self.nextLetter.append(pair)
+    def addLetter(self, string):
+        self.nextStr.append(string)
 
-def characterInList(list,letter):
+
+# -----------------------------------------------------------------------------#
+# --------------------- Creating original dataset -----------------------------#
+# -----------------------------------------------------------------------------#
+
+
+def characterInList(list,string): # boolean to see if letter is already present in CHAR_LIST
     for x in list: # list of Characters
-        if x.getKey() == letter:
+        if x.getKey() == string:
             return True
     return False
 
-def appendPair(list, pair):
-    pass
+def getCharacterIndex(list, string): # get index of of chacter in CHAR_LIST
+    for i in range(len(list)):
+        if list[i].getKey() == string:
+            return i
+    return 0
+
+def addLetterToIndex(list, index, string): # adds letter to indexed Character in CHAR_LIST
+    list[index].addLetter(string)
+
 
 def generateDataset():
+    global CHAR_LIST
     file = open("namesBoys.txt", "r")
     names = file.read().splitlines()
     for name in names:
-        name = "__" + name + "__"
+        name = ("_" * m) + name + ("_" * m)
         #print(name)
-        index = 0
         for i in range(len(name)):
-            if (characterInList(CHAR_LIST, name[i].upper())) == False:
-                newCharacter = Character(name[i].upper(), [])
+            if (characterInList(CHAR_LIST, name[i:i+m].upper())) == False:
+                newCharacter = Character(name[i:i+m].upper(), [])
                 CHAR_LIST.append(newCharacter)
+            if name[i+m] == "_":
+                break
+            else:
+                index = getCharacterIndex(CHAR_LIST, name[i:i+m].upper())
+                addLetterToIndex(CHAR_LIST, index, name[i+m].upper())
+
+# -----------------------------------------------------------------------------#
+# ----------------------------- Name Generation -------------------------------#
+# -----------------------------------------------------------------------------#
+
+def randomNumber(length):
+    num = random.randint(0, length-1)
+    return num
+
+def startSequence(list):
+    totalStartSegments = []
+    for character in list:
+        if character.getKey() == ("_"* m):
+            for letter in character.getNextStrList():
+                totalStartSegments.append(letter)
+    randNum = randomNumber(len(totalStartSegments))
+    return totalStartSegments[randNum]
+
+
+def getLetter(segment, list):
+    letters = []
+    print(segment, "test")
+    for character in list:
+        if character.getKey() == segment:
+            for letter in character.getNextStrList():
+                letters.append(letter)
+    print(letters)
+    randNum = randomNumber(len(letters))
+    #print(randNum)
+    return letters[randNum]
+
+
+def markov(list):
+    global CURRENT_NAME
+    startString = startSequence(CHAR_LIST)
+    CURRENT_NAME = ("_" * m) + startString
+    currentSegment = CURRENT_NAME[(len(CURRENT_NAME)-(m)):(len(CURRENT_NAME))]
+    for i in range(MAX_LENGTH):
+        letter = getLetter(currentSegment, CHAR_LIST)
+        CURRENT_NAME = CURRENT_NAME + letter
+        print(CURRENT_NAME)
+        currentSegment = CURRENT_NAME[(len(CURRENT_NAME)-(m)):(len(CURRENT_NAME))]
+        #print(currentSegment)
 
 
 
@@ -93,5 +113,7 @@ def generateDataset():
 
 
 generateDataset()
-for x in CHAR_LIST:
-    print(x.getKey(), x.getPairList())
+markov(CHAR_LIST)
+#startSequence(CHAR_LIST)
+# for x in CHAR_LIST:
+#     print(x.getKey(), x.getNextStrList())
