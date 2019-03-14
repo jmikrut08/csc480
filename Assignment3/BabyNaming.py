@@ -2,7 +2,7 @@ import random
 # file_object  = open(“filename”, “mode”) where file_object is the variable to add the file object.
 #GLOBAL VARS
 CHAR_LIST = []
-m = 3
+m = 2
 MIN_LENGTH = 5
 MAX_LENGTH = 10
 CURRENT_NAME = ""
@@ -57,7 +57,9 @@ def generateDataset():
             if (characterInList(CHAR_LIST, name[i:i+m].upper())) == False:
                 newCharacter = Character(name[i:i+m].upper(), [])
                 CHAR_LIST.append(newCharacter)
-            if name[i+m] == "_":
+            if name[i] == "_" and i > m:
+                #indexEnd = getCharacterIndex(CHAR_LIST, "_")
+                #addLetterToIndex(CHAR_LIST, indexEnd, "_")
                 break
             else:
                 index = getCharacterIndex(CHAR_LIST, name[i:i+m].upper())
@@ -97,15 +99,14 @@ def markov(list):
     global CURRENT_NAME
     startString = startSequence(CHAR_LIST)
     CURRENT_NAME = ("_" * m) + startString
-    currName = CURRENT_NAME
     currentSegment = CURRENT_NAME[(len(CURRENT_NAME)-(m)):(len(CURRENT_NAME))]
     for i in range(MAX_LENGTH):
-        print(CURRENT_NAME)
-        print(currentSegment)
+        #print(CURRENT_NAME)
+        #print(currentSegment)
         letter = getLetter(currentSegment, CHAR_LIST)
         CURRENT_NAME = CURRENT_NAME + letter
         currentSegment = CURRENT_NAME[(len(CURRENT_NAME)-(m)):(len(CURRENT_NAME))]
-    print(CURRENT_NAME)
+    return CURRENT_NAME
 
 
 
@@ -114,9 +115,19 @@ def markov(list):
 
 generateDataset()
 startSequence(CHAR_LIST)
-for x in CHAR_LIST:
-    print(x.getKey(), x.getNextStrList())
-markov(CHAR_LIST)
+# for x in CHAR_LIST:
+#     print(x.getKey(), x.getNextStrList())
+name = markov(CHAR_LIST)
+print(name)
+name = name[m:len(name)]
+print(name)
+finalName = ""
+for i in range(len(name)):
+    if name[i] == "_":
+        break
+    else:
+        finalName = finalName + name[i]
+print(finalName)
 #startSequence(CHAR_LIST)
 # for x in CHAR_LIST:
 #     print(x.getKey(), x.getNextStrList())
