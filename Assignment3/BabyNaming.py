@@ -2,7 +2,7 @@ import random
 # file_object  = open(“filename”, “mode”) where file_object is the variable to add the file object.
 #GLOBAL VARS
 CHAR_LIST = []
-m = 2
+m = 3
 MIN_LENGTH = 5
 MAX_LENGTH = 10
 CURRENT_NAME = ""
@@ -74,7 +74,7 @@ def randomNumber(length):
 def startSequence(list):
     totalStartSegments = []
     for character in list:
-        if character.getKey() == ("_"* m):
+        if character.getKey() == ("_" * m):
             for letter in character.getNextStrList():
                 totalStartSegments.append(letter)
     randNum = randomNumber(len(totalStartSegments))
@@ -83,14 +83,13 @@ def startSequence(list):
 
 def getLetter(segment, list):
     letters = []
-    print(segment, "test")
     for character in list:
         if character.getKey() == segment:
             for letter in character.getNextStrList():
                 letters.append(letter)
-    print(letters)
+    if len(letters) < 1:
+        return "_"
     randNum = randomNumber(len(letters))
-    #print(randNum)
     return letters[randNum]
 
 
@@ -98,14 +97,15 @@ def markov(list):
     global CURRENT_NAME
     startString = startSequence(CHAR_LIST)
     CURRENT_NAME = ("_" * m) + startString
+    currName = CURRENT_NAME
     currentSegment = CURRENT_NAME[(len(CURRENT_NAME)-(m)):(len(CURRENT_NAME))]
     for i in range(MAX_LENGTH):
+        print(CURRENT_NAME)
+        print(currentSegment)
         letter = getLetter(currentSegment, CHAR_LIST)
         CURRENT_NAME = CURRENT_NAME + letter
-        print(CURRENT_NAME)
         currentSegment = CURRENT_NAME[(len(CURRENT_NAME)-(m)):(len(CURRENT_NAME))]
-        #print(currentSegment)
-
+    print(CURRENT_NAME)
 
 
 
@@ -113,6 +113,9 @@ def markov(list):
 
 
 generateDataset()
+startSequence(CHAR_LIST)
+for x in CHAR_LIST:
+    print(x.getKey(), x.getNextStrList())
 markov(CHAR_LIST)
 #startSequence(CHAR_LIST)
 # for x in CHAR_LIST:
