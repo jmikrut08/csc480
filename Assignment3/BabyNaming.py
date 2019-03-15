@@ -159,7 +159,7 @@ while True:
         order_int = int(order)
         break
 while True:
-    numberOfNames = input("How many names do you want to generate?\n")
+    numberOfNames = input("How many names do you want to generate? (1-20)\n")
     if numberOfNames in possibleInts:
         numberOfNames_int = int(numberOfNames)
         break
